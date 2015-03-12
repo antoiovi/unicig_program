@@ -4,7 +4,10 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import com.antoiovi.unicig.condotti.Condotto;
+
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 //import com.antoiovi.calctermodin.panels.APanelTubo_2;
@@ -13,6 +16,16 @@ public class APanelCondConc extends JPanel implements APCondotto{
 APCondotto condotto_int;
 APCondotto condotto_est;
 JComboBox coboxsezest;
+
+/**
+ * 
+ * Lista di APconodtti collegati a cui fare seguire alcune azioni :
+ * 		1-quando cambio la forma di questa entità,allora cambia la forma di tutti gli	oggetti du questa lista
+ * 
+ */
+List<APCondotto> apcondotti;
+
+
 	/**
 	 * Create the panel.
 	 */
@@ -39,6 +52,10 @@ JComboBox coboxsezest;
 		 */
 		condotto_int.addAPCondottoRealted(condotto_est);
 		//coboxsezinte.setVisible(false);
+		/**
+		 * 
+		 */
+		apcondotti=new ArrayList<APCondotto>();
 	}
 	/**
 	 * IMPLEMENTAZIONE METODI APCondoitti
@@ -50,6 +67,7 @@ condotto_int.setTitolo(arg0);
 	@Override
 	public void setTipo(String arg0) {
 	}
+	
 	@Override
 	public void quadrato() {
 		// TODO Auto-generated method stub
@@ -62,7 +80,7 @@ condotto_int.setTitolo(arg0);
 	}
 	@Override
 	public void circolare() {
-		// TODO Auto-generated method stub
+		condotto_int.circolare();
 		
 	}
 	@Override
@@ -72,6 +90,26 @@ condotto_int.setTitolo(arg0);
 	}
 	@Override
 	public void addAPCondottoRealted(APCondotto apcondotto) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Condotto getCondotto() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void quadrato(List<APCondotto> apcondotti_temp) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void rettangolare(List<APCondotto> apcondotti_temp) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void circolare(List<APCondotto> apcondotti_temp) {
 		// TODO Auto-generated method stub
 		
 	}

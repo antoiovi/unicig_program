@@ -16,7 +16,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPopupMenu;
 
-import com.antoiovi.unicig.condotti.*;
+import com.antoiovi.unicig.condotti.Condotto;
+import com.antoiovi.unicig.condotti.CondottoBase;
 import com.antoiovi.unicig.project.commons.JIF_Rugosita;
 import com.antoiovi.unicig.tubi.Tubo;
 import com.antoiovi.unicig.tubi.TuboC;
@@ -41,6 +42,7 @@ import java.beans.PropertyChangeEvent;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,24 +68,41 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 	private JSpinner textSpessore;
 	private JFormattedTextField textRugosita;
 	private JSpinner textResterm;
+	String strfloat = "%1.2f";
 	Tubo tubo;
 	TuboFactory factoryTubo;
-	double lungh;
+/* 
+ * Parametri per il tubo
+ * 
+ */
+	String forma;
+	double sviluppo;// Lunghezza totale
 	double diametro;
 	double spessore;
 	double latoa;
 	double latob;
 	double rug;
 	double rter;
-	String forma;
-	String strfloat = "%1.2f";
+	/* 
+	 * Parametri per il condotto
+	 * 
+	 */
+	double altezza; // deve essere minore di lunghezza totale
+	double coefflimest;
+	
+	
+	/**
+	 * 
+	 */
 	private JSpinner spSviluppo;
 	AVerifier verifier;
 	private JTextField txtTipo;
 	private JTextField txtTitolo;
 	private JPanel panel;
 	/**
-	 * Lista di APconodtti collegati a cui fare seguire alcune azioni
+	 * Lista di APconodtti collegati a cui fare seguire alcune azioni :
+	 * 		1-quando cambio la forma di questa entità,allora cambia la forma di tutti gli	oggetti du questa lista
+	 * 
 	 */
 	List<APCondotto> apcondotti;
 	private JSpinner spPerdite;
@@ -103,7 +122,7 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 
 		this.add(panel_1);
 		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("116px"),},
+				ColumnSpec.decode("76px"),},
 			new RowSpec[] {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -135,6 +154,7 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 		comboBoxSezione.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		comboBoxSezione.setModel(new DefaultComboBoxModel(new String[] {
 				"Circolare", "Rettangolare", "Quadrato" }));
+		comboBoxSezione.setSelectedIndex(0);
 		comboBoxSezione.setActionCommand("Sezione");
 		comboBoxSezione.addActionListener(this);
 		
@@ -217,29 +237,43 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 				JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
 				popupMenu_1.add(mntmNewMenuItem);
 		
+				/**
+				 * 	SVILUPPO (Lunghezza massima)				
+				 */
 		spSviluppo = new JSpinner();
-		spSviluppo.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-		//		CreaTubo();
-			}
-		});
 		spSviluppo .setModel(new SpinnerNumberModel(1.0, 1.0, 5.0, 0.1));
 		JSpinner.NumberEditor ne_spSviluppo=new JSpinner.NumberEditor(spSviluppo , "##0.#");
-		DecimalFormat df=ne_spSviluppo.getFormat();
+		//DecimalFormat df=ne_spSviluppo.getFormat();
 		spSviluppo .setEditor(ne_spSviluppo);
 		
 		panel_1.add(spSviluppo, "1, 19, fill, fill");
-		
+		/**
+		 * ALTEZZA
+		 */
 		JSpinner spAltezza = new JSpinner();
+		spAltezza.setModel(new SpinnerNumberModel(1.0, 1.0, 5.0, 0.1));
+		JSpinner.NumberEditor ne_spAltezza=new JSpinner.NumberEditor(spAltezza , "##0.#");
 		panel_1.add(spAltezza, "1, 21, fill, default");
-		
+		/**
+		 * Coefficiente liminare esterno
+		 */
 		JSpinner spCoefflimest = new JSpinner();
+		spCoefflimest.setModel(new SpinnerNumberModel(8.0, 8.0, 23.0, 0.5));
+		JSpinner.NumberEditor ne_spCoefflimest=new JSpinner.NumberEditor(spCoefflimest , "##0.#");
 		panel_1.add(spCoefflimest, "1, 23, fill, default");
-		
+		/**
+		 * PERDITE LOCALIZZATE
+		 */
 		spPerdite = new JSpinner();
+		spPerdite.setModel(new SpinnerNumberModel(new Double(0), null, null, new Double(1)));
 		panel_1.add(spPerdite, "1, 25");
-
+		/**
+		 * 
+		 */
 		apcondotti=new ArrayList<APCondotto>();
+		/**
+		 * Default imposta la forma circolare
+		 */
 		circolare();
 		//tubo = TuboFactory.getInstace().TuboC(100,105, 100, 0.001, 1);
 	//this.setTubo(tubo);
@@ -300,34 +334,64 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 	}
 
 	
-
+	@Override
 	public void circolare() {
+		List<APCondotto> apcondotti_temp=new ArrayList<APCondotto>(apcondotti);
+		circolare(apcondotti_temp);
+	}
+
+	@Override
+	public void circolare(List<APCondotto> apcondotti_temp) {
 		this.textDiametro.setEnabled(true);
 		this.textLatoA.setEnabled(false);
 		this.textLatoB.setEnabled(false);
-		for(APCondotto apc :apcondotti){
-			apc.circolare();
+		this.comboBoxSezione.setSelectedIndex(0);
+		apcondotti_temp.remove(this);
+		Iterator i=apcondotti_temp.iterator();
+		if(i.hasNext()){
+			APCondotto apc=(APCondotto )i.next();
+			apc.circolare(apcondotti_temp);
 		}
 	}
 
+	@Override
 	public void rettangolare() {
+		List<APCondotto> apcondotti_temp=new ArrayList<APCondotto>(apcondotti);
+		rettangolare(apcondotti_temp);
+	}
+	@Override
+	public void rettangolare(List<APCondotto> apcondotti_temp) {
 		this.textDiametro.setEnabled(false);
 		this.textLatoA.setEnabled(true);
 		this.textLatoB.setEnabled(true);
-		for(APCondotto apc :apcondotti){
-			apc.rettangolare();
+		this.comboBoxSezione.setSelectedIndex(1);
+		apcondotti_temp.remove(this);
+		Iterator i=apcondotti_temp.iterator();
+		if(i.hasNext()){
+			APCondotto apc=(APCondotto )i.next();
+			apc.rettangolare(apcondotti_temp);
 		}
 	}
 
+	@Override
 	public void quadrato() {
+		List<APCondotto> apcondotti_temp=new ArrayList<APCondotto>(apcondotti);
+		quadrato(apcondotti_temp);
+	}
+	@Override
+	public void quadrato(List<APCondotto> apcondotti_temp) {
 		this.textDiametro.setEnabled(false);
 		this.textLatoA.setEnabled(true);
 		this.textLatoB.setEnabled(false);
-		for(APCondotto apc :apcondotti){
-			apc.quadrato();
+		this.comboBoxSezione.setSelectedIndex(2);
+		apcondotti_temp.remove(this);
+		Iterator i=apcondotti_temp.iterator();
+		if(i.hasNext()){
+			APCondotto apc=(APCondotto )i.next();
+			apc.quadrato(apcondotti_temp);
 		}
 	}
-
+	
 	private void setValues() {
 		textRugosita.setText(String.format("%1.6f", rug));
 		
@@ -347,7 +411,19 @@ private boolean verifica(){
 		latob = (Double)textLatoB.getModel().getValue()/100;
 		spessore = (Double)textSpessore.getModel().getValue();
 		spessore/=1000;
+		sviluppo=(Double)spSviluppo.getModel().getValue();
+		if(forma.equals("Circolare")){
+			tubo = factoryTubo.TuboC(diametro, diametro+2*spessore, sviluppo, rter, rug);
+		}else if(forma.equals("Rettangolare")){
+			tubo=factoryTubo.TuboR(latob, latob,spessore, sviluppo, rter, rug);
+		}else if(forma.equals("Quadrato")){
+			tubo=factoryTubo.TuboQ(latoa, spessore, sviluppo, rter, rug);
+		}
 
+		/**
+		 *  DA FARE : INIZZIALIZZARE ALTEZZA E COEFFICIENTE LIMINARE ESTERNO
+		 */
+		
 return true;
 }catch(Exception e){
 	return false;
@@ -391,7 +467,7 @@ return true;
 			}/* else if (input == textDiametro) {
 				try {
 					diametro = Double.parseDouble(textDiametro.getText());
-					// txtLungh.setText(String.format(strfloat, lungh));
+					// txtLungh.setText(String.format(strfloat, sviluppo));
 					return true;
 				} catch (Exception e) {
 					return false;
@@ -399,7 +475,7 @@ return true;
 			} else if (input == textLatoA) {
 				try {
 					latoa = Double.parseDouble(textLatoA.getText());
-					// txtLungh.setText(String.format(strfloat, lungh));
+					// txtLungh.setText(String.format(strfloat, sviluppo));
 					return true;
 				} catch (Exception e) {
 					return false;
@@ -407,7 +483,7 @@ return true;
 			} else if (input == textLatoB) {
 				try {
 					latob = Double.parseDouble(textLatoB.getText());
-					// txtLungh.setText(String.format(strfloat, lungh));
+					// txtLungh.setText(String.format(strfloat, sviluppo));
 					return true;
 				} catch (Exception e) {
 					return false;
@@ -416,7 +492,7 @@ return true;
 				try {
 					spessore = Double.parseDouble(textSpessore.getText());
 					spessore/=1000;
-					// txtLungh.setText(String.format(strfloat, lungh));
+					// txtLungh.setText(String.format(strfloat, sviluppo));
 					return true;
 				} catch (Exception e) {
 					return false;
@@ -460,5 +536,12 @@ return true;
 	public void addAPCondottoRealted(APCondotto apcondotto) {
 		this.apcondotti.add(apcondotto);
 		
+	}
+
+	@Override
+	public Condotto getCondotto() {
+		if(verifica()==false)
+			return null;
+		return new CondottoBase( tubo,coefflimest,altezza);
 	}
 }// FINE CLASSE PANEL TUBO

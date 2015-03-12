@@ -26,7 +26,7 @@ public class Unicig10641_1_Frame extends JFrame {
 
 	private JPanel contentPane;
 	private Project project;
-	private APunicig10641_1 apunicig10641_1;
+	private APunicig10641_3 apunicig10641_1;
 	private APMenubar apmenubar; 
 	private JTextArea textArea;
 	private JScrollPane scrollPane;
@@ -59,7 +59,7 @@ public class Unicig10641_1_Frame extends JFrame {
 		setContentPane(contentPane);
 		
 		
-		 apunicig10641_1 = new APunicig10641_1();
+		 apunicig10641_1 = new APunicig10641_3();
 		contentPane.add(apunicig10641_1, BorderLayout.CENTER);
 		apmenubar = new APMenubar(apunicig10641_1 );
 		contentPane.add(apmenubar, BorderLayout.NORTH);

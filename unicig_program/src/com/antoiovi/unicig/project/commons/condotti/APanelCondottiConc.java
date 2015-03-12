@@ -13,6 +13,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import com.jgoodies.forms.factories.FormFactory;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
 
 public class APanelCondottiConc extends JPanel {
 	List<APanelCondConc> panels_cond;
@@ -60,6 +62,8 @@ public class APanelCondottiConc extends JPanel {
 		}
 		APanelCondLabel panel_1 = new APanelCondLabel();
 		add(panel_1, "1, 1, default, fill");
+		
+		
 		
 		int p1=2;
 		for(int x=0;x<maxpanels;x++){

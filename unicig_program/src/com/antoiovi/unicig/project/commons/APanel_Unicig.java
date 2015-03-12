@@ -44,7 +44,6 @@ public abstract class APanel_Unicig extends JPanel implements com.antoiovi.unici
 
 		add(apedificio,IMenu.edificio);
 
-
 		add(apcondotti,IMenu.condotti);
 		
 		add(apcondottiaria,IMenu.condottiaria);

@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 public class Testpanelsempl extends JFrame {
 
 	private JPanel contentPane;
+	/**
+	 * 	pannello per l'inserimento di condotti
+	 */
 	private APCondottiSempl panel_cond;
 	private JSpinner spinner;
 

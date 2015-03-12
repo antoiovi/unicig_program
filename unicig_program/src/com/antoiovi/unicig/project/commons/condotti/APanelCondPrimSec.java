@@ -4,6 +4,8 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import com.antoiovi.unicig.condotti.Condotto;
+
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -72,6 +74,26 @@ condotto_int.setTitolo(arg0);
 	}
 	@Override
 	public void addAPCondottoRealted(APCondotto apcondotto) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Condotto getCondotto() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void quadrato(List<APCondotto> apcondotti_temp) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void rettangolare(List<APCondotto> apcondotti_temp) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void circolare(List<APCondotto> apcondotti_temp) {
 		// TODO Auto-generated method stub
 		
 	}

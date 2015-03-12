@@ -1,4 +1,4 @@
-package com.antoiovi.unicig.project.commons.condotti;
+package com.antoiovi.unicig.project.unicig10641_3;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -6,9 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollPane;
 
-public class Testpanelcondconc extends JFrame {
+import com.antoiovi.unicig.project.menu.APMenubar;
+import com.antoiovi.unicig.project.menu.IMenu;
+/**
+ * Unicig10641_2 Condotti fumari e condotto aria separati
+ * @author antoiovi
+ *
+ */
+public class Unicig10641_3Frame extends JFrame {
 
 	private JPanel contentPane;
 
@@ -19,7 +25,7 @@ public class Testpanelcondconc extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Testpanelcondconc frame = new Testpanelcondconc();
+					Unicig10641_3Frame frame = new Unicig10641_3Frame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -31,21 +37,22 @@ public class Testpanelcondconc extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Testpanelcondconc() {
+	public Unicig10641_3Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		/**
-		 * Pannello per l'inserimento di condotti concentrici
-		 */
-		APanelCondottiConc panel = new APanelCondottiConc();
-		//contentPane.add(panel, BorderLayout.CENTER);
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JScrollPane scrollPane = new JScrollPane(panel);
-		contentPane.add(scrollPane, BorderLayout.CENTER);
+		
+		APunicig10641_3 panel = new APunicig10641_3();
+		contentPane.add(panel);
+		IMenu menu=(IMenu)panel ;
+		APMenubar panel_1 = new APMenubar (menu);
+		//panel_1.getBtnCondottiAria().setVisible(false);
+		contentPane.add(panel_1, BorderLayout.NORTH);
+		
 	}
 
 }
