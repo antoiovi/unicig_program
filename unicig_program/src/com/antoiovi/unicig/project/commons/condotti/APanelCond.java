@@ -59,6 +59,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
 import java.awt.Font;
+import java.awt.CardLayout;
 
 public class APanelCond extends JPanel implements ActionListener,APCondotto{
 	private JComboBox comboBoxSezione;
@@ -107,6 +108,18 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 	List<APCondotto> apcondotti;
 	private JSpinner spPerdite;
 	
+/**
+ * PANEL SELECT TIPO E SUOI COMPONENTI; 	
+ */
+	private JPanel panelSelectTipo;
+	private JComboBox comboBoxTipo;
+	// Nome utilizzato nel CardLayout
+	public final String name_comboboxselecttipo="name_comboboxselecttipo";
+	private JTextField txtSelectedTipo;
+	// Nome utilizzato nel CardLayout
+	public final String  name_textselectedtipo= "name_textselectedtipo";
+	
+	
 	/**
 	 * Create the panel.
 	 */
@@ -122,9 +135,11 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 
 		this.add(panel_1);
 		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("76px"),},
+				ColumnSpec.decode("87px:grow"),},
 			new RowSpec[] {
 				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("max(11dlu;default)"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -163,9 +178,38 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 		txtTitolo.setText("Titolo");
 		panel_1.add(txtTitolo, "1, 1, fill, default");
 		txtTitolo.setColumns(10);
+		/**
+		 * IMPOSTA IL PANEL SELECT TIPO
+		 */
+		panelSelectTipo = new JPanel();
+		panel_1.add(panelSelectTipo, "1, 3, fill, fill");
+		panelSelectTipo.setLayout(new CardLayout(0, 0));
 		
+		comboBoxTipo = new JComboBox();
+		comboBoxTipo.setModel(new DefaultComboBoxModel(new String[] {"Singolo", "Concentrico"}));
+		comboBoxTipo.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		panelSelectTipo.add(comboBoxTipo, name_comboboxselecttipo);
+		
+		txtSelectedTipo = new JTextField();
+		txtSelectedTipo.setEditable(false);
+		txtSelectedTipo.setText("Singolo");
+		panelSelectTipo.add(txtSelectedTipo, name_textselectedtipo);
+		txtSelectedTipo.setColumns(10);
+		/**
+		 * imposta visibile il compnente textSelectedTipo; 
+		 * 	
+		 */
+		CardLayout cl=(CardLayout)panelSelectTipo.getLayout();
+		cl.last(panelSelectTipo);// mostra il  txtSelectedTipo
+		
+		
+		
+		/**
+		 * CAMPO TIPO: se uso il componente in un condotto concentrico posso
+		 * 	metter il valore = A "iNTERNO" O "Esterno" ,o Aria, o fumo, ecc..
+		 */
 		panel = new JPanel();
-		panel_1.add(panel, "1, 3, fill, fill");
+		panel_1.add(panel, "1, 5, fill, fill");
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		txtTipo = new JTextField();
@@ -173,7 +217,10 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 		txtTipo.setEditable(false);
 		txtTipo.setText("Condotto semplice");
 		txtTipo.setColumns(10);
-		panel_1.add(comboBoxSezione, "1, 5, fill, fill");
+		/**
+		 * SEZIONE
+		 */
+		panel_1.add(comboBoxSezione, "1, 7, fill, fill");
 		
 				textDiametro = new JSpinner();
 				textDiametro.addChangeListener(new ChangeListener() {
@@ -183,7 +230,7 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 				});
 				textDiametro.setModel(new SpinnerNumberModel(100.0, 100.0,600.0, 10.0));
 				
-				panel_1.add(textDiametro, "1, 7, fill, fill");
+				panel_1.add(textDiametro, "1, 9, fill, fill");
 				textDiametro.setInputVerifier(verifier);
 		
 				textLatoA = new JSpinner();
@@ -193,7 +240,7 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 					}
 				});
 				textLatoA.setModel(new SpinnerNumberModel(150.0,150.0,600.0, 10.0));
-				panel_1.add(textLatoA, "1, 9, fill, fill");
+				panel_1.add(textLatoA, "1, 11, fill, fill");
 		
 				textLatoB = new JSpinner();
 				textLatoB.addChangeListener(new ChangeListener() {
@@ -202,15 +249,15 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 					}
 				});
 				textLatoB.setModel(new SpinnerNumberModel(150.0,150.0,600.0, 10.0));
-				panel_1.add(textLatoB, "1, 11, fill, fill");
+				panel_1.add(textLatoB, "1, 13, fill, fill");
 		
 				textSpessore = new JSpinner();
 				textSpessore.setModel(new SpinnerNumberModel(0.0,0.0,50.0, 1.0));
-				panel_1.add(textSpessore, "1, 13, fill, fill");
+				panel_1.add(textSpessore, "1, 15, fill, fill");
 		
 				textRugosita = new JFormattedTextField();
 				textRugosita.setToolTipText("Click dx per help\r\n");
-				panel_1.add(textRugosita, "1, 15, fill, fill");
+				panel_1.add(textRugosita, "1, 17, fill, fill");
 				textRugosita.setColumns(10);
 				
 				textRugosita.setInputVerifier(verifier);
@@ -229,7 +276,7 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 					}
 				});
 				textResterm .setModel(new SpinnerNumberModel(0, 0, 1.0, 0.01));
-				panel_1.add(textResterm, "1, 17, fill, fill");
+				panel_1.add(textResterm, "1, 19, fill, fill");
 				
 				JPopupMenu popupMenu_1 = new JPopupMenu();
 				addPopup(textResterm, popupMenu_1);
@@ -246,27 +293,27 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 		//DecimalFormat df=ne_spSviluppo.getFormat();
 		spSviluppo .setEditor(ne_spSviluppo);
 		
-		panel_1.add(spSviluppo, "1, 19, fill, fill");
+		panel_1.add(spSviluppo, "1, 21, fill, fill");
 		/**
 		 * ALTEZZA
 		 */
 		JSpinner spAltezza = new JSpinner();
 		spAltezza.setModel(new SpinnerNumberModel(1.0, 1.0, 5.0, 0.1));
 		JSpinner.NumberEditor ne_spAltezza=new JSpinner.NumberEditor(spAltezza , "##0.#");
-		panel_1.add(spAltezza, "1, 21, fill, default");
+		panel_1.add(spAltezza, "1, 23, fill, default");
 		/**
 		 * Coefficiente liminare esterno
 		 */
 		JSpinner spCoefflimest = new JSpinner();
 		spCoefflimest.setModel(new SpinnerNumberModel(8.0, 8.0, 23.0, 0.5));
 		JSpinner.NumberEditor ne_spCoefflimest=new JSpinner.NumberEditor(spCoefflimest , "##0.#");
-		panel_1.add(spCoefflimest, "1, 23, fill, default");
+		panel_1.add(spCoefflimest, "1, 25, fill, default");
 		/**
 		 * PERDITE LOCALIZZATE
 		 */
 		spPerdite = new JSpinner();
 		spPerdite.setModel(new SpinnerNumberModel(new Double(0), null, null, new Double(1)));
-		panel_1.add(spPerdite, "1, 25");
+		panel_1.add(spPerdite, "1, 27");
 		/**
 		 * 
 		 */
@@ -544,4 +591,36 @@ return true;
 			return null;
 		return new CondottoBase( tubo,coefflimest,altezza);
 	}
+	
+	/**
+	 * Pannello che contiene i due componenti:
+	 *  1 - JComboBox comboBoxTipo;
+	 *   2- JTextField txtSelectedTipo;
+	 *   Esso ha un Layout di tipo CardLayout;  Viene utilizzato per impostare se visibile il campo testo
+	 *   o il campo combo box; Se viene visualizzato il campo testo si mette il testo desiderato 
+	 *   (di solito Semplice o Concentrico) se viene visualizzato il combo si estrae il combo e si definiscono
+	 *   nella classe che lo utilizza le azioni specifiche
+	 *   ESEMPIO :
+	 *  	 APanelCond panel_int = new APanelCond();
+			condotto_int=panel_int;
+			add(panel_int);
+			panel_int.getTxtSelectedTipo().setText("Concentrico");
+			CardLayout cl=(CardLayout)panel_int.getPanelSelectTipo().getLayout();
+			cl.first(panel_int.getPanelSelectTipo());// mostra il comboBoxTipo
+			cl.last(panel_int.getPanelSelectTipo());// mostra il  txtSelectedTipo
+	 * @return
+	 */
+	public JPanel getPanelSelectTipo() {
+		return panelSelectTipo;
+	}
+	
+	public JComboBox getComboBoxTipo() {
+		return comboBoxTipo;
+	}
+	
+	public JTextField getTxtSelectedTipo() {
+		return txtSelectedTipo;
+	}
+	
+	
 }// FINE CLASSE PANEL TUBO

@@ -1,53 +1,94 @@
 package com.antoiovi.unicig.project.commons.condotti;
 
 import javax.swing.JPanel;
+
 import java.awt.CardLayout;
 import java.awt.BorderLayout;
+
+import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class APanelCondSempOrConc extends JPanel {
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JRadioButton rdbtnNewRadioButton;
-	private JRadioButton rdbtnNewRadioButton_1;
-	private CardLayout cardlayout;
 	JPanel parentpanel;
+	JPanel panel_sing_selectTipo;
+	JPanel panel_conc_selectTipo;
+	JPanel panel_conc_selectTipo_e;
+	
+	APanelCond panelCCint;
+	APanelCond panelCCest;
+	
+	JComboBox comboBox_singolo;
+	JComboBox comboBox_concentrico;
+	
 	public APanelCondSempOrConc() {
-		setLayout(new BorderLayout(0, 0));
 		parentpanel=this;
-		JPanel panel_2 = new JPanel();
-		add(panel_2);
-		cardlayout=new CardLayout(0, 0);
-		panel_2.setLayout(cardlayout);
+		setLayout(new CardLayout(0, 0));
 		
-		APanelCond panel_1 = new APanelCond();
-		panel_2.add(panel_1, "condottosemplice");
-		
-		APanelCondConc panel = new APanelCondConc();
-		panel_2.add(panel, "condottoconcentrico");
-		
-		JPanel panel_3 = new JPanel();
-		add(panel_3, BorderLayout.NORTH);
-		
-		rdbtnNewRadioButton = new JRadioButton("Semplice");
-		buttonGroup.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setSelected(true);
-		panel_3.add(rdbtnNewRadioButton);
-		
-		rdbtnNewRadioButton_1 = new JRadioButton("Concentrico");
-		rdbtnNewRadioButton_1.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				if(rdbtnNewRadioButton_1.isSelected()){
-					cardlayout.show(parentpanel, "condottosemplice");	
-				}else{
-					cardlayout.show(parentpanel, "condottoconcentrico");
+		APanelCond apanelcond = new APanelCond();
+		apanelcond.getComboBoxTipo().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String tipo=(String )comboBox_singolo.getModel().getSelectedItem();
+				CardLayout cl=(CardLayout)parentpanel.getLayout();
+				System.out.println(arg0.getActionCommand());
+				if(tipo.equals("Singolo")){
+					comboBox_concentrico.setSelectedIndex(0);
+					cl.first(parentpanel);
+				}else if(tipo.equals("Concentrico")){
+					comboBox_concentrico.setSelectedIndex(1);
+					cl.last(parentpanel);
 				}
 			}
 		});
-		buttonGroup.add(rdbtnNewRadioButton_1);
-		panel_3.add(rdbtnNewRadioButton_1);
+		add(apanelcond, "name_9375290927662");
+		panel_sing_selectTipo=apanelcond .getPanelSelectTipo();
+		 	CardLayout cl=(CardLayout)panel_sing_selectTipo.getLayout();
+			cl.first(panel_sing_selectTipo);// mostra il comboBoxTipo
+			comboBox_singolo=apanelcond.getComboBoxTipo();
+			comboBox_singolo.setEnabled(true);
+			
+		//panel_sing_selectTipo.getp
+		
+		APanelCondConc apanelcondconc = new APanelCondConc();
+		apanelcondconc.getPanel_int().getComboBoxTipo().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl=(CardLayout)parentpanel.getLayout();
+				System.out.println(e.getActionCommand());
+				String tipo=(String )comboBox_concentrico.getModel().getSelectedItem();
+				System.out.println(tipo);
+				if(tipo.equals("Singolo")){
+					comboBox_singolo.setSelectedIndex(0);
+					cl.first(parentpanel);
+				}else if(tipo.equals("Concentrico")){
+					comboBox_singolo.setSelectedIndex(1);
+					cl.last(parentpanel);
+				}
+				
+			}
+		});
+		add(apanelcondconc, "name_9380801493032");
+
+		panelCCint=apanelcondconc.getPanel_int();
+		panelCCest=apanelcondconc.getPanel_est();
+		
+		panel_conc_selectTipo=panelCCint.getPanelSelectTipo();
+		panel_conc_selectTipo_e=panelCCest.getPanelSelectTipo();
+	 	CardLayout cl2=(CardLayout)panel_conc_selectTipo.getLayout();
+		cl2.first(panel_conc_selectTipo);// mostra il comboBoxTipo
+		comboBox_concentrico=panelCCint.getComboBoxTipo();
+		comboBox_concentrico.setEnabled(true);
+	
+		
+		
+		
+		
+		//		apanelcondconc.get
+		//panel_conc_selectTipo=apanelcondconc.getp
+		
 	}
 
 }
