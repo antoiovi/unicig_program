@@ -73,6 +73,7 @@ public class Unicig10640_Frame extends JFrame {
 		 */
 		APMenubar panel_1 = new APMenubar (menu);
 		panel_1.getBtnCondottiAria().setVisible(false);
+		panel_1.getBtnCanali().setVisible(false);
 		contentPane.add(panel_1, BorderLayout.NORTH);
 	}
 

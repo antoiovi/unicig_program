@@ -26,40 +26,59 @@ import java.awt.CardLayout;
 
 public class APPiano extends JPanel {
 int max_piani=10;
-int pianocorrente=1;
-private JButton btnBack;
-private JButton btnForward;
-private JLabel lbl_piano;
+int npiani=10;
+int pianocorrente=0;
 private JPanel panel_1;
 private JPanel panel_2;
 private APanelCondLabel panel_label;
-private APanelCond apc_primario;
-private APanelCond apc_secondario;
-private APanelCondPrimSec apc_primsec;
+  
 private List<APanelCondPrimSec> apcps_condotti;
-private List<DatiCondotto> datiCondotti;
+
 private JPanel panel_condotti;
+private JPanel panel;
+private JButton btnBack;
+private JLabel lbl_piano;
+private JButton btnForward;
 	/**
 	 * Create the panel.
 	 */
 	public APPiano() {
-		datiCondotti =new ArrayList<DatiCondotto>();
-		apcps_condotti=new ArrayList<APanelCondPrimSec>();
+		setLayout(new BorderLayout(0, 0));
 		
+		apcps_condotti=new ArrayList<APanelCondPrimSec>();
 		
 		for(int x=0;x<max_piani;x++){
 			APanelCondPrimSec pannello=new APanelCondPrimSec ();
 			apcps_condotti.add(pannello);
-			DatiCondotto piano=new DatiCondotto();
-			datiCondotti.add(piano);
 		}
-		setLayout(new BorderLayout(0, 0));
 		
+		panel_1 = new JPanel();
+		add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("max(75dlu;default)"),
+				ColumnSpec.decode("right:max(123dlu;default)"),
+				ColumnSpec.decode("left:max(125dlu;default)"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("max(280dlu;default)"),
+				RowSpec.decode("top:default"),}));
 		
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.SOUTH);
+		panel_2 = new JPanel();
+		panel_1.add(panel_2, "2, 2, fill, fill");
+		
+		panel_label = new APanelCondLabel();
+		panel_1.add(panel_label, "3, 2, fill, fill");
+
+		panel_condotti = new JPanel();
+		panel_1.add(panel_condotti, "4, 2, fill, fill");
+		panel_condotti.setLayout(new CardLayout(0, 0));
+		
+		panel = new JPanel();
+		panel_1.add(panel, "3, 3, 2, 1, center, center");
 		
 		btnBack = new JButton("<<");
+		btnBack .setEnabled(false);
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				pianoBack();
@@ -67,66 +86,31 @@ private JPanel panel_condotti;
 		});
 		panel.add(btnBack);
 		
-		lbl_piano = new JLabel("New label");
+		lbl_piano = new JLabel("0");
 		panel.add(lbl_piano);
 		
 		btnForward = new JButton(">>");
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pianoForward();
+			pianoForward();
 			}
 		});
 		panel.add(btnForward);
-		
-		panel_1 = new JPanel();
-		add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(75dlu;default)"),
-				ColumnSpec.decode("left:max(123dlu;default)"),
-				ColumnSpec.decode("max(89dlu;default)"),
-				ColumnSpec.decode("right:max(71dlu;default):grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(280dlu;default):grow"),
-				FormFactory.DEFAULT_ROWSPEC,}));
-		
-		panel_2 = new JPanel();
-		panel_1.add(panel_2, "2, 2, fill, fill");
-		
-		panel_label = new APanelCondLabel();
-		panel_1.add(panel_label, "3, 2, fill, fill");
-		
-		apc_secondario = new APanelCond();
-		panel_1.add(apc_secondario, "4, 2, default, top");
-		
-		apc_primario = new APanelCond();
-		panel_1.add(apc_primario, "5, 2, fill, fill");
-		
-		panel_condotti = new JPanel();
-		panel_1.add(panel_condotti, "7, 2, fill, fill");
-		panel_condotti.setLayout(new CardLayout(0, 0));
 		
 		for(int x=0;x<max_piani;x++){
 			APanelCondPrimSec pannello=new APanelCondPrimSec ();
 			apcps_condotti.add(pannello);
 			panel_condotti.add(pannello,x);
-			DatiCondotto piano=new DatiCondotto();
-			datiCondotti.add(piano);
 		}
 
 	}
-
-	
-	private void pianoBack(){
+private void pianoBack(){
 		
 		
 		pianocorrente--;
 		btnForward.setEnabled(true);
-		if(pianocorrente==0){
-			pianocorrente=1;
+		if(pianocorrente<0){
+			pianocorrente=0;
 			btnBack.setEnabled(false);
 		}else{
 		CardLayout cl=(CardLayout) panel_condotti.getLayout();
@@ -140,8 +124,8 @@ private JPanel panel_condotti;
 	private void pianoForward(){
 		pianocorrente++;
 		btnBack.setEnabled(true);
-		if(pianocorrente>max_piani){
-			pianocorrente=max_piani;
+		if(pianocorrente==npiani){
+			pianocorrente=npiani-1;
 			btnForward.setEnabled(false);
 		}else{
 			CardLayout cl=(CardLayout) panel_condotti.getLayout();
@@ -149,19 +133,10 @@ private JPanel panel_condotti;
 			}
 		lbl_piano.setText(String.valueOf(pianocorrente));
 	}
+	public void setNpiani(int n_piani) {
+		if(n_piani>max_piani || n_piani<1)
+			return;
+		this.npiani = n_piani;
+	}
 	
-	/*private class DatiCondotto{
-	
-	String sezione;
-	double diam; 
-	double latoa;
-	double latob;
-	double spess;
-	double ruog;
-	double reter;
-	double alt;
-	double sviluppo;
-	double perdite;
-	
-	}*/
 }

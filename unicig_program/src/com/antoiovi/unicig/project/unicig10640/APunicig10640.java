@@ -49,24 +49,38 @@ public APunicig10640() {
 	 * Creazione pannello condotti fumari
 	 */
 	
-	APCondottiSempl apcs_condottifumo=new APCondottiSempl();
-	/**
-	 * Creazione pannello canali da fumo
-	 */
-	APCondottiSempl apcs_canalifumo=new APCondottiSempl();
-	apcs_canalifumo.fixSezione("Circolare");
-	//apcondotti=apcs_condottifumo;
-	apcanali=apcs_canalifumo;
+	/*APCondottiSempl apcs_condottifumo=new APCondottiSempl();
+	apcondotti=apcs_condottifumo;
+	
+	*13/05/2015 Il pannello condotti e stato sostituito con un nuovo tipo di pannello
+	*/
 	
 	APPiano appiano=new APPiano();
 	apcondotti=appiano;
+	
+	
+	/**
+	 * Creazione pannello canali da fumo
+	 */
+	/**
+	 * APCondottiSempl apcs_canalifumo=new APCondottiSempl();
+		apcs_canalifumo.fixSezione("Circolare");
+	13/05/2015 Il pannello caldaia e canali da fumo è unico
+			
+	**/
+	
+	
+	apcaldaie=new APGenerLocal();
+	apcanali=apcaldaie;
 	
 	add(apdati,IMenu.dati);
 	add(apambiente,IMenu.ambiente);
 	add(apedificio,IMenu.edificio);
 	add(apcondotti,IMenu.condotti);
+	
 	add(apcanali,IMenu.canali);
-	apcaldaie=new APCaldaie();
+	
+	
 	add(apcaldaie,IMenu.caldaie);
 	
 	//apinputdata=new APinputdata();

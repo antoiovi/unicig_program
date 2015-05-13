@@ -17,6 +17,10 @@ import java.awt.event.ActionEvent;
 public class APMenubar extends JPanel {
 IMenu menu;
 private JButton btnCondottiAria;
+private JButton btnEdificio;
+private JButton btnCondottiFumo;
+private JButton btnCanali;
+private JButton btnGeneratori;
 	
 	/**
 	 * Create the panel.
@@ -63,24 +67,24 @@ private JButton btnCondottiAria;
 		gbc_btnNewButton_1.gridy = 0;
 		add(btnNewButton_1, gbc_btnNewButton_1);
 		
-		JButton btnNewButton = new JButton("Edificio");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnEdificio = new JButton("Edificio");
+		btnEdificio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menu.viewEdificio();
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.fill = GridBagConstraints.VERTICAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 0;
-		add(btnNewButton, gbc_btnNewButton);
-		btnNewButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNewButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNewButton.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/Edificio.GIF")));
+		GridBagConstraints gbc_btnEdificio = new GridBagConstraints();
+		gbc_btnEdificio.fill = GridBagConstraints.VERTICAL;
+		gbc_btnEdificio.insets = new Insets(0, 0, 0, 5);
+		gbc_btnEdificio.anchor = GridBagConstraints.WEST;
+		gbc_btnEdificio.gridx = 2;
+		gbc_btnEdificio.gridy = 0;
+		add(btnEdificio, gbc_btnEdificio);
+		btnEdificio.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnEdificio.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnEdificio.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/Edificio.GIF")));
 		
-		JButton btnCondottiFumo = new JButton("Condotti fumo");
+		btnCondottiFumo = new JButton("Condotti fumo");
 		btnCondottiFumo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menu.viewCondotti();
@@ -96,8 +100,8 @@ private JButton btnCondottiAria;
 		gbc_btnCondottiFumo.gridy = 0;
 		add(btnCondottiFumo, gbc_btnCondottiFumo);
 		
-		JButton btnNewButton_4 = new JButton("Canali");
-		btnNewButton_4.addActionListener(new ActionListener() {
+		btnCanali = new JButton("Canali");
+		btnCanali.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menu.viewCanali();
 			}
@@ -118,63 +122,78 @@ private JButton btnCondottiAria;
 		gbc_btnCondottiAria.gridx = 4;
 		gbc_btnCondottiAria.gridy = 0;
 		add(btnCondottiAria, gbc_btnCondottiAria);
-		btnNewButton_4.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNewButton_4.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNewButton_4.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/canalef.GIF")));
-		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
-		gbc_btnNewButton_4.fill = GridBagConstraints.VERTICAL;
-		gbc_btnNewButton_4.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_4.gridx = 5;
-		gbc_btnNewButton_4.gridy = 0;
-		add(btnNewButton_4, gbc_btnNewButton_4);
+		btnCanali.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnCanali.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnCanali.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/canalef.GIF")));
+		GridBagConstraints gbc_btnCanali = new GridBagConstraints();
+		gbc_btnCanali.fill = GridBagConstraints.VERTICAL;
+		gbc_btnCanali.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCanali.gridx = 5;
+		gbc_btnCanali.gridy = 0;
+		add(btnCanali, gbc_btnCanali);
 		
-		JButton btnNewButton_5 = new JButton("Dati input");
-		btnNewButton_5.addActionListener(new ActionListener() {
+		JButton btnInputdata = new JButton("Dati input");
+		btnInputdata.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menu.viewInputdata();
 			}
 		});
 		
-		JButton btnNewButton_7 = new JButton("Caldaie");
-		btnNewButton_7.addActionListener(new ActionListener() {
+		btnGeneratori = new JButton("Caldaie");
+		btnGeneratori.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menu.viewCaldaie();
 			}
 		});
-		btnNewButton_7.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNewButton_7.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNewButton_7.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/Caldaia.GIF")));
-		GridBagConstraints gbc_btnNewButton_7 = new GridBagConstraints();
-		gbc_btnNewButton_7.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_7.gridx = 6;
-		gbc_btnNewButton_7.gridy = 0;
-		add(btnNewButton_7, gbc_btnNewButton_7);
-		btnNewButton_5.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNewButton_5.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNewButton_5.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/input.GIF")));
-		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
-		gbc_btnNewButton_5.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_5.gridx = 7;
-		gbc_btnNewButton_5.gridy = 0;
-		add(btnNewButton_5, gbc_btnNewButton_5);
+		btnGeneratori.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnGeneratori.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnGeneratori.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/Caldaia.GIF")));
+		GridBagConstraints gbc_btnGeneratori = new GridBagConstraints();
+		gbc_btnGeneratori.fill = GridBagConstraints.VERTICAL;
+		gbc_btnGeneratori.insets = new Insets(0, 0, 0, 5);
+		gbc_btnGeneratori.gridx = 6;
+		gbc_btnGeneratori.gridy = 0;
+		add(btnGeneratori, gbc_btnGeneratori);
+		btnInputdata.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnInputdata.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInputdata.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/input.GIF")));
+		GridBagConstraints gbc_btnInputdata = new GridBagConstraints();
+		gbc_btnInputdata.fill = GridBagConstraints.VERTICAL;
+		gbc_btnInputdata.insets = new Insets(0, 0, 0, 5);
+		gbc_btnInputdata.gridx = 7;
+		gbc_btnInputdata.gridy = 0;
+		add(btnInputdata, gbc_btnInputdata);
 		
-		JButton btnNewButton_6 = new JButton("Calcola");
-		btnNewButton_6.addActionListener(new ActionListener() {
+		JButton btnCalcola = new JButton("Calcola");
+		btnCalcola.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menu.viewOutputdata();
 			}
 		});
-		btnNewButton_6.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNewButton_6.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNewButton_6.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/calcoli.GIF")));
-		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
-		gbc_btnNewButton_6.gridx = 8;
-		gbc_btnNewButton_6.gridy = 0;
-		add(btnNewButton_6, gbc_btnNewButton_6);
+		btnCalcola.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnCalcola.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnCalcola.setIcon(new ImageIcon(APMenubar.class.getResource("/com/antoiovi/unicig/project/image/calcoli.GIF")));
+		GridBagConstraints gbc_btnCalcola = new GridBagConstraints();
+		gbc_btnCalcola.fill = GridBagConstraints.VERTICAL;
+		gbc_btnCalcola.gridx = 8;
+		gbc_btnCalcola.gridy = 0;
+		add(btnCalcola, gbc_btnCalcola);
 
 	}
 
 	public JButton getBtnCondottiAria() {
 		return btnCondottiAria;
+	}
+	public JButton getBtnEdificio() {
+		return btnEdificio;
+	}
+	public JButton getBtnCondottiFumo() {
+		return btnCondottiFumo;
+	}
+	public JButton getBtnCanali() {
+		return btnCanali;
+	}
+	public JButton getBtnGeneratori() {
+		return btnGeneratori;
 	}
 }

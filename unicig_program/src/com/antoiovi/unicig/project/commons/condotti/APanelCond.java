@@ -635,52 +635,7 @@ return true;
 	
 	
 	public boolean getDaticondotto(DatiCondotto daticondotto) {
-		try{
-			try{
-				rter =(Double)textResterm.getModel().getValue();
-				rug = Double.parseDouble(textRugosita.getText());
-				diametro =(Double)textDiametro.getModel().getValue()/100;
-				latoa = (Double)textLatoA.getModel().getValue()/100;
-				latob = (Double)textLatoB.getModel().getValue()/100;
-				spessore = (Double)textSpessore.getModel().getValue();
-				spessore/=1000;
-				sviluppo=(Double)spSviluppo.getModel().getValue();
-				if(forma.equals("Circolare")){
-					tubo = factoryTubo.TuboC(diametro, diametro+2*spessore, sviluppo, rter, rug);
-				}else if(forma.equals("Rettangolare")){
-					tubo=factoryTubo.TuboR(latob, latob,spessore, sviluppo, rter, rug);
-				}else if(forma.equals("Quadrato")){
-					tubo=factoryTubo.TuboQ(latoa, spessore, sviluppo, rter, rug);
-				}
-
-				/**
-				 *  DA FARE : INIZZIALIZZARE ALTEZZA E COEFFICIENTE LIMINARE ESTERNO
-				 */
-				
-		return true;
-		}catch(Exception e){
-			return false;
-		}
-			
-			
-			daticondotto.sezione=this.comboBoxSezione.getSelectedItem().toString();
-			daticondotto.diam=(Double)textDiametro.getModel().getValue();
-			daticondotto.latoa=
-			this.textLatoA.setValue(daticondotto.latoa);
-			this.textLatoB.setValue(daticondotto.latob);
-			this.textResterm.setValue(daticondotto.reter);
-			this.textRugosita.setText(String.valueOf(daticondotto.ruog));
-			this.textSpessore.setValue(daticondotto.spess);
-			this.spSviluppo.setValue(daticondotto.sviluppo);
-			this.spPerdite.setValue(daticondotto.perdite);
-			this.spCoefflimest.setValue(daticondotto.coefLimEst);
-				
-			
-			return true;
-		}catch(Exception e){
-		return false;
-		}
-	
+				return false;
 	}
 
 	public void setDaticondotto(DatiCondotto daticondotto) {
