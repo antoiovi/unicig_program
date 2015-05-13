@@ -14,9 +14,27 @@ import com.antoiovi.unicig.project.menu.IMenu;
 
 
 import java.awt.CardLayout;
+/**
+ * Classe base da cui derivano tutti i pannelli principali dei programmi
+ * 	implementa l'interfaccia IMenu in cui sono esposti i metodi del menu
+ * e implementa la logia dei comandi del menu
+ * 
+ * Le classi che estendono questa classe devono creare i JPAnel definiti qui,
+ * 	e poi devono essere agiunti o tramite il metodo initPAnels() o tramite 
+ *  il metodo di JPANEL  add
+*	
+*	public void add(Component comp, Object constraints)
+*
+*constraints è una stringa tratta da IMenu che viene utilizzata tramite 
+*il layout CardLayout per visualizzare l'oppurtuno pannello
+ *  
+ *  
+ *  
+ * 
+ */
 
 public abstract class APanel_Unicig extends JPanel implements com.antoiovi.unicig.project.menu.IMenu {
-	//protected Project project;
+	//	protected Project project;
 	protected JPanel apdati;
 	protected JPanel apambiente;
 	protected JPanel apedificio;
@@ -57,12 +75,13 @@ public abstract class APanel_Unicig extends JPanel implements com.antoiovi.unici
 		add(apoutputdata,IMenu.outputdata);
 		
 	}
+	
 	/**
 	 * IMPLEMENTAZIONE DEI METODI DI IMENUBAR PER CONSENTIRE LO SCORRIMENTO DEI PANNELLI
 	 */
 	@Override
 	public void viewDati() {
-CardLayout cl=(CardLayout)this.getLayout();
+		CardLayout cl=(CardLayout)this.getLayout();
 		cl.show(this,IMenu.dati );
 	}
 	@Override

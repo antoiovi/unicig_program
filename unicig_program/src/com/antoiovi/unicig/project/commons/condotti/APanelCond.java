@@ -61,7 +61,11 @@ import com.jgoodies.forms.factories.FormFactory;
 import java.awt.Font;
 import java.awt.CardLayout;
 
-public class APanelCond extends JPanel implements ActionListener,APCondotto{
+public class APanelCond extends JPanel implements ActionListener,APCondotto,ICondotto{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JComboBox comboBoxSezione;
 	private JSpinner textDiametro;
 	private JSpinner textLatoA;
@@ -69,6 +73,7 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 	private JSpinner textSpessore;
 	private JFormattedTextField textRugosita;
 	private JSpinner textResterm;
+	private JSpinner spCoefflimest;
 	String strfloat = "%1.2f";
 	Tubo tubo;
 	TuboFactory factoryTubo;
@@ -304,7 +309,7 @@ public class APanelCond extends JPanel implements ActionListener,APCondotto{
 		/**
 		 * Coefficiente liminare esterno
 		 */
-		JSpinner spCoefflimest = new JSpinner();
+		spCoefflimest = new JSpinner();
 		spCoefflimest.setModel(new SpinnerNumberModel(8.0, 8.0, 23.0, 0.5));
 		JSpinner.NumberEditor ne_spCoefflimest=new JSpinner.NumberEditor(spCoefflimest , "##0.#");
 		panel_1.add(spCoefflimest, "1, 25, fill, default");
@@ -620,6 +625,149 @@ return true;
 	
 	public JTextField getTxtSelectedTipo() {
 		return txtSelectedTipo;
+	}
+	
+	/******************************************************************************************************
+	 * Utilizzo della proprieta DatiCondotto per scambiare dati con l'esterno
+	 ********************************************************************************************************/
+	
+	DatiCondotto daticondotto;
+	
+	
+	public boolean getDaticondotto(DatiCondotto daticondotto) {
+		try{
+			try{
+				rter =(Double)textResterm.getModel().getValue();
+				rug = Double.parseDouble(textRugosita.getText());
+				diametro =(Double)textDiametro.getModel().getValue()/100;
+				latoa = (Double)textLatoA.getModel().getValue()/100;
+				latob = (Double)textLatoB.getModel().getValue()/100;
+				spessore = (Double)textSpessore.getModel().getValue();
+				spessore/=1000;
+				sviluppo=(Double)spSviluppo.getModel().getValue();
+				if(forma.equals("Circolare")){
+					tubo = factoryTubo.TuboC(diametro, diametro+2*spessore, sviluppo, rter, rug);
+				}else if(forma.equals("Rettangolare")){
+					tubo=factoryTubo.TuboR(latob, latob,spessore, sviluppo, rter, rug);
+				}else if(forma.equals("Quadrato")){
+					tubo=factoryTubo.TuboQ(latoa, spessore, sviluppo, rter, rug);
+				}
+
+				/**
+				 *  DA FARE : INIZZIALIZZARE ALTEZZA E COEFFICIENTE LIMINARE ESTERNO
+				 */
+				
+		return true;
+		}catch(Exception e){
+			return false;
+		}
+			
+			
+			daticondotto.sezione=this.comboBoxSezione.getSelectedItem().toString();
+			daticondotto.diam=(Double)textDiametro.getModel().getValue();
+			daticondotto.latoa=
+			this.textLatoA.setValue(daticondotto.latoa);
+			this.textLatoB.setValue(daticondotto.latob);
+			this.textResterm.setValue(daticondotto.reter);
+			this.textRugosita.setText(String.valueOf(daticondotto.ruog));
+			this.textSpessore.setValue(daticondotto.spess);
+			this.spSviluppo.setValue(daticondotto.sviluppo);
+			this.spPerdite.setValue(daticondotto.perdite);
+			this.spCoefflimest.setValue(daticondotto.coefLimEst);
+				
+			
+			return true;
+		}catch(Exception e){
+		return false;
+		}
+	
+	}
+
+	public void setDaticondotto(DatiCondotto daticondotto) {
+				
+		this.comboBoxSezione.setSelectedItem(daticondotto.sezione);
+		this.textDiametro.setValue(daticondotto.diam);
+		this.textLatoA.setValue(daticondotto.latoa);
+		this.textLatoB.setValue(daticondotto.latob);
+		this.textResterm.setValue(daticondotto.reter);
+		this.textRugosita.setText(String.valueOf(daticondotto.ruog));
+		this.textSpessore.setValue(daticondotto.spess);
+		this.spSviluppo.setValue(daticondotto.sviluppo);
+		this.spPerdite.setValue(daticondotto.perdite);
+		this.spCoefflimest.setValue(daticondotto.coefLimEst);
+		
+		
+	}
+
+	
+/**
+ * IMPLEMENTAZIONE INTERFACCIA ICondotto
+ * 
+ */
+	@Override
+	public String getSezione() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double getDiam() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getLatoa() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getLatob() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getAltezza() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getLunghezza() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getPerditeloc() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getRterm() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getCoefLimEst() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getSpessore() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getRugosita() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
