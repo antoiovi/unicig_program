@@ -4,9 +4,9 @@ import javax.swing.JPanel;
 
 
 //import project.Project;
-import ui.commons.APAmbiente;
+/*import ui.commons.APAmbiente;
 import ui.commons.APDati;
-
+*/
 import com.antoiovi.unicig.project.commons.*;
 import com.antoiovi.unicig.project.menu.IMenu;
 

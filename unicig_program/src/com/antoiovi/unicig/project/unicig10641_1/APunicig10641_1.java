@@ -4,8 +4,9 @@ import javax.swing.JPanel;
 
 import com.antoiovi.unicig.project.commons.APAmbiente;
 import com.antoiovi.unicig.project.commons.APDati;
+
 import com.antoiovi.unicig.project.commons.APanel_Unicig;
-import com.antoiovi.unicig.project.commons.condotti.APCondottiSempl;
+
 import com.antoiovi.unicig.project.menu.IMenu;
 
 
@@ -27,16 +28,13 @@ public class APunicig10641_1 extends APanel_Unicig implements IMenu {
 apdati=new APDati();
 apambiente=new APAmbiente();
 apedificio=new APEdificio();;
-apcaldaie=new APCaldaie();
+apcaldaie=new Generatori();
 apinputdata=new APinputdata();
 apoutputdata=new APoutputdata();
 
 
-APCondottiSempl apcondottis=new APCondottiSempl();
-APCondottiSempl apcondottica=new APCondottiSempl();
-apcondottica.fixSezione("Circolare");
-apcondotti=apcondottis;
-apcanali=apcondottica;
+apcondotti=new Condotti();
+apcanali=new Canali();
 
 
 

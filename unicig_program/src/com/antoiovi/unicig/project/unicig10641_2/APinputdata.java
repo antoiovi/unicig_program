@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 public class APinputdata extends JPanel {
 
-	APinputdata(){
+	public APinputdata(){
 		
 	}
 }

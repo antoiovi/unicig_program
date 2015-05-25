@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="/uniciglib/src/it/iovino/UNI_EN_13384_1"/>
 	<classpathentry kind="lib" path="/uniciglib/src/it/iovino/utilita"/>
 	<classpathentry kind="lib" path="C:/Documents and Settings/antoiovi/Documenti/lib/antoiovi-unicig-01.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/antoiovi/Documenti/lib/jgoodies-validation-2_6_0-20150402/jgoodies-validation-2.6.0/jgoodies-validation-2.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/antoiovi/Documenti/lib/jgoodies-common-1.9.0/jgoodies-common-1.9.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

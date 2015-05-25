@@ -64,7 +64,7 @@ public class APEdificio extends JPanel  {
 		gbc_lblComignolo.gridy = 1;
 		panel_1.add(lblComignolo, gbc_lblComignolo);
 		
-		JLabel lblCoefficienteDiCarico = new JLabel("Coefficiente di carico");
+		JLabel lblCoefficienteDiCarico = new JLabel("Coefficiente di perdita localizzata");
 		GridBagConstraints gbc_lblCoefficienteDiCarico = new GridBagConstraints();
 		gbc_lblCoefficienteDiCarico.insets = new Insets(0, 0, 0, 5);
 		gbc_lblCoefficienteDiCarico.gridx = 1;

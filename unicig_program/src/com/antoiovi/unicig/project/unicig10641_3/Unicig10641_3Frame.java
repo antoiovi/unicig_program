@@ -1,7 +1,9 @@
 package com.antoiovi.unicig.project.unicig10641_3;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -39,7 +41,11 @@ public class Unicig10641_3Frame extends JFrame {
 	 */
 	public Unicig10641_3Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 900, 700);
+		this.setSize(1000,800);
+		this.setResizable(false);
+		//setMaximizedBounds(new Rectangle(100, 100, 900, 700));
+		//setMaximumSize(new Dimension(600, 600));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -50,7 +56,7 @@ public class Unicig10641_3Frame extends JFrame {
 		contentPane.add(panel);
 		IMenu menu=(IMenu)panel ;
 		APMenubar panel_1 = new APMenubar (menu);
-		//panel_1.getBtnCondottiAria().setVisible(false);
+		panel_1.getBtnCondottiAria().setVisible(false);
 		contentPane.add(panel_1, BorderLayout.NORTH);
 		
 	}

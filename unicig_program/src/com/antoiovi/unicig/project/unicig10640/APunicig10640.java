@@ -6,8 +6,6 @@ import javax.swing.JPanel;
 
 import com.antoiovi.unicig.project.commons.APAmbiente;
 import com.antoiovi.unicig.project.commons.APDati;
-import com.antoiovi.unicig.project.commons.APanel_Unicig;
-import com.antoiovi.unicig.project.commons.condotti.APCondottiSempl;
 import com.antoiovi.unicig.project.commons.*;
 import com.antoiovi.unicig.project.menu.IMenu;
 /**
@@ -55,8 +53,8 @@ public APunicig10640() {
 	*13/05/2015 Il pannello condotti e stato sostituito con un nuovo tipo di pannello
 	*/
 	
-	APPiano appiano=new APPiano();
-	apcondotti=appiano;
+	// APCondottiCCR appiano=new APCondottiCCR();
+	apcondotti=new Condotti();
 	
 	
 	/**
@@ -70,8 +68,8 @@ public APunicig10640() {
 	**/
 	
 	
-	apcaldaie=new APGenerLocal();
-	apcanali=apcaldaie;
+	apcaldaie=new Generatori();
+	apcanali=new Canali();
 	
 	add(apdati,IMenu.dati);
 	add(apambiente,IMenu.ambiente);

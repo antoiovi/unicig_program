@@ -39,7 +39,9 @@ public class Unicig10641_2Frame extends JFrame {
 	 */
 	public Unicig10641_2Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 900, 700);
+		this.setSize(1000,800);
+		this.setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -49,9 +51,9 @@ public class Unicig10641_2Frame extends JFrame {
 		APunicig10641_2 panel = new APunicig10641_2();
 		contentPane.add(panel);
 		IMenu menu=(IMenu)panel ;
-		APMenubar panel_1 = new APMenubar (menu);
-		panel_1.getBtnCondottiAria().setVisible(false);
-		contentPane.add(panel_1, BorderLayout.NORTH);
+		APMenubar panel_menu = new APMenubar (menu);
+		panel_menu.getBtnCondottiAria().setVisible(false);
+		contentPane.add(panel_menu, BorderLayout.NORTH);
 		
 	}
 
