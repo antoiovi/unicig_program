@@ -16,7 +16,7 @@ import com.antoiovi.unicig.project.unicig10640.APEdificio;
 
 import java.awt.CardLayout;
 
-public class APunicig10641_1 extends APanel_Unicig implements IMenu {
+public class APunicig10641_1 extends APanel_Unicig {
 	
 	/**
 	 * Create the panel.
