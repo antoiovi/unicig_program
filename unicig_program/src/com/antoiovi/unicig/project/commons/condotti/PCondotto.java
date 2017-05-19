@@ -59,11 +59,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.ValidationResultModel;
-import com.jgoodies.validation.util.DefaultValidationResultModel;
-import com.jgoodies.validation.util.ValidationUtils;
-import com.jgoodies.validation.view.ValidationResultViewFactory;
+ 
 
 import java.awt.Font;
 import java.awt.CardLayout;
@@ -220,12 +216,7 @@ public class PCondotto extends JPanel implements ActionListener,APCondotto,ICond
 			 * DIAMETRO: sezione circolare
 			 */
 				textDiametro = new JSpinner();
-				textDiametro.addFocusListener(new FocusAdapter() {
-					@Override
-					public void focusLost(FocusEvent arg0) {
-						validateIt();
-					}
-				});
+				textDiametro.addFocusListener(new FocusAdapter() {});
 				textDiametro.addChangeListener(new ChangeListener() {
 					public void stateChanged(ChangeEvent e) {
 						//CreaTubo();
@@ -364,14 +355,9 @@ public class PCondotto extends JPanel implements ActionListener,APCondotto,ICond
 		
 		textTempesterna.setColumns(10);
 		JButton okButton =new JButton();
-		okButton.addActionListener(new ValidateAction());
+		 
 		panel_1.add(okButton, "3, 27, fill, default");
-		/**
-		 * Valdiatio Jgoodies 
-		 */
-		this.validationResultModel = new DefaultValidationResultModel();
-		validationResultComponent = ValidationResultViewFactory.createReportList(
-                        this.validationResultModel);
+	 
 		panel_1.add(validationResultComponent, "1, 29, 5, 1, fill, fill");
 		
 		/**
@@ -578,40 +564,7 @@ return true;
 					// textRugosita.setText("Errore");
 					return false;
 				}
-			}/* else if (input == textDiametro) {
-				try {
-					diametro = Double.parseDouble(textDiametro.getText());
-					// txtLungh.setText(String.format(strfloat, sviluppo));
-					return true;
-				} catch (Exception e) {
-					return false;
-				}
-			} else if (input == textLatoA) {
-				try {
-					latoa = Double.parseDouble(textLatoA.getText());
-					// txtLungh.setText(String.format(strfloat, sviluppo));
-					return true;
-				} catch (Exception e) {
-					return false;
-				}
-			} else if (input == textLatoB) {
-				try {
-					latob = Double.parseDouble(textLatoB.getText());
-					// txtLungh.setText(String.format(strfloat, sviluppo));
-					return true;
-				} catch (Exception e) {
-					return false;
-				}
-			} else if (input == textSpessore) {
-				try {
-					spessore = Double.parseDouble(textSpessore.getText());
-					spessore/=1000;
-					// txtLungh.setText(String.format(strfloat, sviluppo));
-					return true;
-				} catch (Exception e) {
-					return false;
-				}
-				*/
+			}
 			
 			return true;
 		}			
@@ -821,61 +774,7 @@ public void fixSezione(String sezione){
 		
 	}
 	}
-	/**
-	 * 
-	 */
-	 private ValidationResultModel validationResultModel;
-	/**
-	 * ROUTINE DI VALIDAZIONE JGOODIE
-	 * @return 
-	 */
-	ValidationResult validateIt(){
-		ValidationResult validationResult = new ValidationResult();
-        try{
-		rter =(Double)textResterm.getModel().getValue();
-		rug = Double.parseDouble(textRugosita.getText());
-		diametro =(Double)textDiametro.getModel().getValue()/100;
-		latoa = (Double)textLatoA.getModel().getValue()/100;
-		latob = (Double)textLatoB.getModel().getValue()/100;
-		spessore = (Double)textSpessore.getModel().getValue();
-		spessore/=1000;
-		sviluppo=(Double)spSviluppo.getModel().getValue();
-		if(forma.equals("Circolare")){
-			tubo = factoryTubo.TuboC(diametro, diametro+2*spessore, sviluppo, rter, rug);
-		}else if(forma.equals("Rettangolare")){
-			tubo=factoryTubo.TuboR(latob, latob,spessore, sviluppo, rter, rug);
-		}else if(forma.equals("Quadrato")){
-			tubo=factoryTubo.TuboQ(latoa, spessore, sviluppo, rter, rug);
-		}
-		
-		if(rug <0.5){
-			validationResult.addError("Rugosità deve essre maggiore di 0.5");
-		}
-		
-		
-        }catch(Exception e){
-        	validationResult.addError("Errore grave");
-        }
-		return validationResult ;
-	}
-	/**
-	 * VALIDATION ACTION
-	 * @author antoiovi
-	 *
-	 */
-	private class ValidateAction extends AbstractAction {
-      
-  
-		public ValidateAction() {
-            super("Validate");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-          //  synchFormAndFeed();
-            ValidationResult validationResult = validateIt();
-            validationResultModel.setResult(validationResult);
-        }
-    }
+	
 	
 	
 }// FINE CLASSE PANEL TUBO

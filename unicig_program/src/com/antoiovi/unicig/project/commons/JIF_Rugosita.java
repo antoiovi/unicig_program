@@ -1,9 +1,5 @@
 package com.antoiovi.unicig.project.commons;
 
-import java.awt.EventQueue;
-
-import javax.swing.JInternalFrame;
-
 import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;

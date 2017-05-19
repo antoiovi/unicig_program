@@ -50,12 +50,6 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
 
-import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.util.DefaultValidationResultModel;
-import com.jgoodies.validation.ValidationResultModel;
-import com.jgoodies.validation.util.ValidationUtils;
-import com.jgoodies.validation.view.ValidationResultViewFactory;
-
 
 public class APAmbiente extends JPanel {
 	private JTextField textField;
@@ -72,7 +66,7 @@ public class APAmbiente extends JPanel {
 	private JSpinner sp_p;
 	private JSpinner sp_dt;
 
-	  private ValidationResultModel validationResultModel;
+//	  private ValidationResultModel validationResultModel;
 	   
 	
 
@@ -81,7 +75,7 @@ public class APAmbiente extends JPanel {
 	 */
 	public APAmbiente() {
 
-        this.validationResultModel = new DefaultValidationResultModel();
+      //  this.validationResultModel = new DefaultValidationResultModel();
       //  this.validationResultModel.addPropertyChangeListener(new ValidationListener());
         
 		Locale.setDefault(Locale.US);
