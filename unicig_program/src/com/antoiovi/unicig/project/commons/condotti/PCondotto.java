@@ -358,8 +358,7 @@ public class PCondotto extends JPanel implements ActionListener,APCondotto,ICond
 		 
 		panel_1.add(okButton, "3, 27, fill, default");
 	 
-		panel_1.add(validationResultComponent, "1, 29, 5, 1, fill, fill");
-		
+ 		
 		/**
 		 * INIZZIALIZZO una lista di condotti a cui collegare il compoinente: 
 		 */

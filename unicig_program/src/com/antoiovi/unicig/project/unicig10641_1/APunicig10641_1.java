@@ -12,7 +12,7 @@ import com.antoiovi.unicig.project.menu.IMenu;
 
 
 
-import com.antoiovi.unicig.project.unicig10640.APEdificio;
+import com.antoiovi.unicig.project.commons.*;
 
 import java.awt.CardLayout;
 

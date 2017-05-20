@@ -1,0 +1,2 @@
+ -d target 
+ -classpath resources\uniciglib.jar;forms-1.3.0.jar
