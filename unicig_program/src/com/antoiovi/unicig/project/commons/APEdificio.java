@@ -14,6 +14,10 @@ import java.awt.GridBagConstraints;
 import javax.swing.JSpinner;
 import java.awt.Insets;
 import javax.swing.SpinnerNumberModel;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class APEdificio extends JPanel  {
 
@@ -49,13 +53,20 @@ public class APEdificio extends JPanel  {
 		gbc_lblNumeroPiani.gridy = 0;
 		panel_1.add(lblNumeroPiani, gbc_lblNumeroPiani);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(1, 1, 10, 1));
+		JSpinner spinnerNPiani = new JSpinner();
+		spinnerNPiani.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSpinner s = (JSpinner) e.getSource();
+				   int i=(Integer)s.getValue();
+			}
+		});
+		 
+		spinnerNPiani.setModel(new SpinnerNumberModel(1, 1, 10, 1));
 		GridBagConstraints gbc_spinner = new GridBagConstraints();
 		gbc_spinner.insets = new Insets(0, 0, 5, 5);
 		gbc_spinner.gridx = 1;
 		gbc_spinner.gridy = 0;
-		panel_1.add(spinner, gbc_spinner);
+		panel_1.add(spinnerNPiani, gbc_spinner);
 		
 		JLabel lblComignolo = new JLabel("Comignolo");
 		GridBagConstraints gbc_lblComignolo = new GridBagConstraints();
