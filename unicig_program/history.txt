@@ -1,0 +1,10 @@
+CREAZIONE DI UN FILE CON TUTTI I PERCORSI DI FILE JAVA
+C\:....ib\......> dir /s /B *.java > sources.txt
+
+crazione directory target
+
+compilo ed invio nella  dierctory target : 
+
+-->javac @sources.txt -d target -sourcepath forms-1.3.0-src.zip -classpath resources\*.jar
+
+NOTE forms-1.3.0-src.zip ho dovuto usare il sorgente nello zip invece che lo jar (verificaare come mai)
