@@ -7,12 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.antoiovi.unicig.project.Project;
 import com.antoiovi.unicig.project.menu.APMenubar;
 import com.antoiovi.unicig.project.menu.IMenu;
 
 public class Unicig10641_1Frame extends JFrame {
 
 	private JPanel contentPane;
+	Project project;
 
 	/**
 	 * Launch the application.
@@ -43,8 +45,8 @@ public class Unicig10641_1Frame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		
-		APunicig10641_1 panel = new APunicig10641_1();
+		project=new Project();
+		APunicig10641_1 panel = new APunicig10641_1(project);
 		contentPane.add(panel);
 		IMenu menu=(IMenu)panel ;
 		APMenubar panel_1 = new APMenubar (menu);
