@@ -19,9 +19,19 @@ public static final int QUADRATA=2;
 	double quota_slm=0.0;
 	
 	/* Edificio */
-	  int npiani=1;
+	  int npiani=3;
+	  int numtratti=1;
 	  int maxNpiani=10;
-	  String sezioneCanna=sezioni[CIRCOLARE];
+	  String sezioneCanna=sezioni[QUADRATA];
+	  double perdlocCam=0.1;
+
+	public double getPerdlocCam() {
+		return perdlocCam;
+	}
+
+	public void setPerdlocCam(double perdlocCam) {
+		this.perdlocCam = perdlocCam;
+	}
 
 	public Project() {
 		super();
@@ -116,6 +126,14 @@ public static final int QUADRATA=2;
 
 	public void setSezioneCanna(String sezioneCanna) {
 		this.sezioneCanna = sezioneCanna;
+	}
+
+	public int getNumtratti() {
+		return numtratti;
+	}
+
+	public void setNumtratti(int numtratti) {
+		this.numtratti = numtratti;
 	}
 
 	
