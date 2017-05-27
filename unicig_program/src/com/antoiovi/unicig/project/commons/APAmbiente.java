@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import com.antoiovi.unicig.project.tabelle.Localita;
 import com.antoiovi.unicig.project.Ambiente;
+import com.antoiovi.unicig.project.Project;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -36,6 +37,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.ButtonGroup;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ChangeEvent;
 
 import java.awt.Color;
@@ -49,35 +52,38 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import javax.swing.JFormattedTextField;
+import java.awt.FlowLayout;
 
 
-public class APAmbiente extends JPanel {
-	private JTextField textField;
+public class APAmbiente extends JPanel implements ItemListener, ChangeListener,PropertyChangeListener {
+	private JFormattedTextField txtFCitta;
 	private JTextField textField_TCitVic;
-	private JTextField txtDTperquota;
 	private JTextField textField_1;
 	private JTextField txtTemperaturaEsternaEffettiva;
 	private final ButtonGroup btgAmbest = new ButtonGroup();
 	private JRadioButton rdbtnComUrb;
 	private JRadioButton rdbtnPiccaggl;
 	private JRadioButton rdbtnEdificiIsolati;
-	private JSpinner sp_ei;
-	private JSpinner sp_pa;
-	private JSpinner sp_p;
-	private JSpinner sp_dt;
+	private JSpinner sp_ed_isol;
+	private JSpinner sp_pic_agg;
+	private JSpinner sp_piano;
+	private JSpinner sp_dtPianSup;
 
 //	  private ValidationResultModel validationResultModel;
-	   
+	   Project project;
+	   private JSpinner sp_corr_temp;
+	   private JComboBox cbxLocPiuVicina;
 	
 
 	/**
 	 * Create the panel.
 	 */
-	public APAmbiente() {
-
-      //  this.validationResultModel = new DefaultValidationResultModel();
-      //  this.validationResultModel.addPropertyChangeListener(new ValidationListener());
-        
+	public APAmbiente(Project _project) {
+		this.project=_project;
+       
 		Locale.setDefault(Locale.US);
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -102,7 +108,7 @@ public class APAmbiente extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+				 }));
 		
 		/**
 		 * SELEZIONE LKOCALITA' PIù VICINA
@@ -110,19 +116,22 @@ public class APAmbiente extends JPanel {
 		JLabel lblLocalitPiVicina = new JLabel("Localit\u00E0 pi\u00F9 vicina");
 		add(lblLocalitPiVicina, "2, 2, right, default");
 		String cittavicine[]=Localita.getInstance().getlocalita();
-		JComboBox comboBox = new JComboBox(cittavicine);
-		comboBox.addActionListener(new ActionListener() {
+		cbxLocPiuVicina = new JComboBox(cittavicine);
+		cbxLocPiuVicina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 JComboBox cb = (JComboBox)arg0.getSource();
 			        String citta = (String)cb.getSelectedItem();
 			        double t=Localita.getInstance().getTemperatura(citta);
 			        textField_TCitVic.setText(t+ "°C");
-			        calcola();
+			        project.setLocalita_piu_vicina(citta);
+			        impostTempEsterna();
+			        
+			       
 			}
 		});
 		//comboBox.setSelectedIndex(1);
-		comboBox.setEditable(true);
-		add(comboBox, "4, 2, fill, default");
+		cbxLocPiuVicina.setEditable(true);
+		add(cbxLocPiuVicina, "4, 2, fill, default");
 		
 		JPanel panel_3 = new JPanel();
 		add(panel_3, "6, 2, fill, fill");
@@ -133,10 +142,10 @@ public class APAmbiente extends JPanel {
 		panel_3.add(lblNewLabel_3);
 		
 		textField_TCitVic = new JTextField();
+		textField_TCitVic.setEnabled(false);
+		textField_TCitVic.setEditable(false);
 		textField_TCitVic.setDisabledTextColor(Color.BLACK);
 		textField_TCitVic.setBackground(Color.WHITE);
-		textField_TCitVic.setEditable(false);
-		textField_TCitVic.setEnabled(false);
 		
 		
 		panel_3.add(textField_TCitVic);
@@ -147,17 +156,19 @@ public class APAmbiente extends JPanel {
 		JLabel lblNewLabel = new JLabel("Localit\u00E0 :");
 		add(lblNewLabel, "2, 4, right, default");
 		
-		textField = new JTextField();
-		add(textField, "4, 4, fill, default");
-		textField.setColumns(10);
+		txtFCitta = new JFormattedTextField();
+		add(txtFCitta, "4, 4, fill, default");
+		txtFCitta.setColumns(10);
+		txtFCitta.addPropertyChangeListener(this);
+		
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panel_1, "2, 6, 3, 1, fill, fill");
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{119, 47, 0};
+		gbl_panel_1.columnWidths = new int[]{119, 0, 47, 0};
 		gbl_panel_1.rowHeights = new int[]{14, 23, 23, 23, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		/**
@@ -165,8 +176,8 @@ public class APAmbiente extends JPanel {
 		 */
 		JLabel lblCorrezioneTemperatura = new JLabel("Correzione temperatura in base a ambiente esterno\r\n");
 		GridBagConstraints gbc_lblCorrezioneTemperatura = new GridBagConstraints();
-		gbc_lblCorrezioneTemperatura.gridwidth = 2;
-		gbc_lblCorrezioneTemperatura.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCorrezioneTemperatura.gridwidth = 3;
+		gbc_lblCorrezioneTemperatura.insets = new Insets(0, 0, 5, 0);
 		gbc_lblCorrezioneTemperatura.gridx = 0;
 		gbc_lblCorrezioneTemperatura.gridy = 0;
 		panel_1.add(lblCorrezioneTemperatura, gbc_lblCorrezioneTemperatura);
@@ -174,20 +185,7 @@ public class APAmbiente extends JPanel {
 		 * COMPLESSO URBANO
 		 */
 		rdbtnComUrb = new JRadioButton("Complesso urbano");
-		rdbtnComUrb.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				
-				 if (e.getStateChange() == ItemEvent.SELECTED) {
-				        sp_pa.setEnabled(false); // spinner piccolo agglomerato
-				        sp_ei.setEnabled(false);// spinner edificio isolato
-				        calcola();
-				    }
-				    else if (e.getStateChange() == ItemEvent.DESELECTED) {
-
-				    }
-				
-			}
-		});
+		rdbtnComUrb.addItemListener(this);
 		btgAmbest.add(rdbtnComUrb);
 		GridBagConstraints gbc_rdbtnComUrb = new GridBagConstraints();
 		gbc_rdbtnComUrb.anchor = GridBagConstraints.WEST;
@@ -199,17 +197,8 @@ public class APAmbiente extends JPanel {
 		 * PICCOLO AGGLOMERATO
 		 */
 		rdbtnPiccaggl = new JRadioButton("Piccolo agglomerato");
-		rdbtnPiccaggl.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				 if (e.getStateChange() == ItemEvent.SELECTED) {
-					 sp_pa.setEnabled(true); // spinner piccolo agglomerato
-					 calcola();
-				    }
-				    else if (e.getStateChange() == ItemEvent.DESELECTED) {
-				    	sp_pa.setEnabled(false); // spinner piccolo agglomerato
-				    }
-			}
-		});
+		rdbtnPiccaggl.addItemListener(this);
+		
 		btgAmbest.add(rdbtnPiccaggl);
 		GridBagConstraints gbc_rdbtnPiccaggl = new GridBagConstraints();
 		gbc_rdbtnPiccaggl.anchor = GridBagConstraints.WEST;
@@ -217,15 +206,6 @@ public class APAmbiente extends JPanel {
 		gbc_rdbtnPiccaggl.gridx = 0;
 		gbc_rdbtnPiccaggl.gridy = 2;
 		panel_1.add(rdbtnPiccaggl, gbc_rdbtnPiccaggl);
-		// SPINNER PICCOLO AGGLOMERATO
-		sp_pa = new JSpinner();
-		sp_pa.setModel(new SpinnerNumberModel(0.0, -1.0, 0.0, 0.5));
-		GridBagConstraints gbc_sp_pa = new GridBagConstraints();
-		gbc_sp_pa.fill = GridBagConstraints.HORIZONTAL;
-		gbc_sp_pa.insets = new Insets(0, 0, 5, 0);
-		gbc_sp_pa.gridx = 1;
-		gbc_sp_pa.gridy = 2;
-		panel_1.add(sp_pa, gbc_sp_pa);
 		/**
 		 * EDIFICI ISOLATI
 		 */
@@ -233,18 +213,24 @@ public class APAmbiente extends JPanel {
 		 * radioButton Edifici isolati
 		 */
 		rdbtnEdificiIsolati = new JRadioButton("Edifici isolati");
-		rdbtnEdificiIsolati.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				 if (e.getStateChange() == ItemEvent.SELECTED) {
-					 sp_ei.setEnabled(true);//SPINNER EDIFICIO ISOLATO
-					 calcola();
-				    }
-				    else if (e.getStateChange() == ItemEvent.DESELECTED) {
-				    	sp_ei.setEnabled(false);//SPINNER EDIFICIO ISOLATO
-				    }
-				
-			}
-		});
+		rdbtnEdificiIsolati.addItemListener(this);
+		// SPINNER PICCOLO AGGLOMERATO
+		sp_pic_agg = new JSpinner();
+		sp_pic_agg.setModel(new SpinnerNumberModel(0.0, -3.0, 0.0, 0.5));
+		sp_pic_agg.addChangeListener(this);
+		
+		JLabel lblDeltaTc = new JLabel("Delta T [\u00B0C]");
+		GridBagConstraints gbc_lblDeltaTc = new GridBagConstraints();
+		gbc_lblDeltaTc.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDeltaTc.gridx = 1;
+		gbc_lblDeltaTc.gridy = 2;
+		panel_1.add(lblDeltaTc, gbc_lblDeltaTc);
+		GridBagConstraints gbc_sp_pa = new GridBagConstraints();
+		gbc_sp_pa.fill = GridBagConstraints.HORIZONTAL;
+		gbc_sp_pa.insets = new Insets(0, 0, 5, 0);
+		gbc_sp_pa.gridx = 2;
+		gbc_sp_pa.gridy = 2;
+		panel_1.add(sp_pic_agg, gbc_sp_pa);
 		btgAmbest.add(rdbtnEdificiIsolati);
 		GridBagConstraints gbc_rdbtnEdificiIsolati = new GridBagConstraints();
 		gbc_rdbtnEdificiIsolati.fill = GridBagConstraints.BOTH;
@@ -255,14 +241,22 @@ public class APAmbiente extends JPanel {
 		/**
 		 * SPINNER EDIFICIO ISOLATO
 		 */
-		sp_ei = new JSpinner();
-		sp_ei.setModel(new SpinnerNumberModel(0.0, -2.0, 0.0, 0.5));
+		
+		JLabel label = new JLabel("Delta T [\u00B0C]");
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 0, 5, 5);
+		gbc_label.gridx = 1;
+		gbc_label.gridy = 3;
+		panel_1.add(label, gbc_label);
+		sp_ed_isol = new JSpinner();
+		sp_ed_isol.addChangeListener(this);
+		sp_ed_isol.setModel(new SpinnerNumberModel(0.0, -5.0, 0.0, 0.5));
 		GridBagConstraints gbc_sp_ei = new GridBagConstraints();
 		gbc_sp_ei.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sp_ei.insets = new Insets(0, 0, 5, 0);
-		gbc_sp_ei.gridx = 1;
+		gbc_sp_ei.gridx = 2;
 		gbc_sp_ei.gridy = 3;
-		panel_1.add(sp_ei, gbc_sp_ei);
+		panel_1.add(sp_ed_isol, gbc_sp_ei);
 		/**
 		 * CORREZZIONE TEMPERATURA PER I PIANI DI AKTEZZA SUPERIORE AGLI EDIFICI CIRCOSTANTI
 		 */
@@ -302,16 +296,17 @@ public class APAmbiente extends JPanel {
 		/**
 		 * spinner indicante il piano dal quale si consoidera una diminuzione di temperatura
 		 */
-		sp_p = new JSpinner();
-		sp_p.setModel(new SpinnerNumberModel(1, 1, 10, 1));
+		sp_piano = new JSpinner();
+		sp_piano.addChangeListener(this);
+		sp_piano.setModel(new SpinnerNumberModel(1, 1, 10, 1));
 		GridBagConstraints gbc_sp_p = new GridBagConstraints();
 		gbc_sp_p.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sp_p.insets = new Insets(0, 0, 5, 0);
 		gbc_sp_p.gridx = 1;
 		gbc_sp_p.gridy = 2;
-		panel_2.add(sp_p, gbc_sp_p);
+		panel_2.add(sp_piano, gbc_sp_p);
 		
-		JLabel lblDifferenzaTemperatura = new JLabel("Differenza temperatura ");
+		JLabel lblDifferenzaTemperatura = new JLabel("Differenza temperatura  [\u00B0C ]");
 		GridBagConstraints gbc_lblDifferenzaTemperatura = new GridBagConstraints();
 		gbc_lblDifferenzaTemperatura.anchor = GridBagConstraints.WEST;
 		gbc_lblDifferenzaTemperatura.insets = new Insets(0, 0, 0, 5);
@@ -321,69 +316,43 @@ public class APAmbiente extends JPanel {
 		/**
 		 * Spinner per la differenza di temperatura dovuta ai piani superiori sporgenti dagli edifici adiacenti
 		 */
-		sp_dt = new JSpinner();
-		sp_dt.setModel(new SpinnerNumberModel(0, -2, 0, 0.5));
+		sp_dtPianSup = new JSpinner();
+		sp_dtPianSup.addChangeListener(this);
+		sp_dtPianSup.setModel(new SpinnerNumberModel(0, -2, 0, 0.5));
 		GridBagConstraints gbc_sp_dt = new GridBagConstraints();
 		gbc_sp_dt.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sp_dt.gridx = 1;
 		gbc_sp_dt.gridy = 3;
-		panel_2.add(sp_dt, gbc_sp_dt);
+		panel_2.add(sp_dtPianSup, gbc_sp_dt);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel_4, "2, 8, 5, 1, left, fill");
-		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.X_AXIS));
+		add(panel_4, "2, 8, 4, 1, fill, fill");
+		panel_4.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JLabel lblDifferenzaDiQuota = new JLabel("Differenza di quota rispetto a localt\u00E0 piu vicina  :");
-		panel_4.add(lblDifferenzaDiQuota);
-		/**
-		 * Spinner differenza di quota
-		 */
-		JSpinner spinner_5 = new JSpinner();
-		spinner_5.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				   JSpinner s = (JSpinner) e.getSource();
-				   int i=(Integer)s.getValue();
-				   /**
-				    * due gradi ogni 200 metri
-				    */
-				txtDTperquota.setText(String.valueOf(-2*i/200));
-				calcola();
-			}
-		});
-		spinner_5.setModel(new SpinnerNumberModel(0, -600, 1000, 200));
-		panel_4.add(spinner_5);
-		
-		JLabel lblDifferenzaTemperatura_1 = new JLabel("Differenza temperatura  : \r\n");
+		JLabel lblDifferenzaTemperatura_1 = new JLabel("Correzione temperatura [ \u00B0C ]  :");
 		panel_4.add(lblDifferenzaTemperatura_1);
-		/**
-		 * Differenza di temperatura dovutoa a differenza di quota
-		 */
-		txtDTperquota = new JTextField();
-		txtDTperquota.setDisabledTextColor(Color.BLACK);
-		txtDTperquota.setEditable(false);
-		txtDTperquota.setBackground(Color.WHITE);
-		txtDTperquota.setEnabled(false);
-		panel_4.add(txtDTperquota);
-		txtDTperquota.setColumns(5);
 		
 		JPanel panel_6 = new JPanel();
 		panel_4.add(panel_6);
+		panel_6.setLayout(new BorderLayout(0, 0));
+		
+		sp_corr_temp = new JSpinner();
+		sp_corr_temp.addChangeListener(this);
+		sp_corr_temp.setModel(new SpinnerNumberModel(0.0, -10.0, 10.0, 0.5));
+		panel_6.add(sp_corr_temp);
 		
 		JPanel panel_5 = new JPanel();
-		add(panel_5, "2, 10, 3, 1, fill, fill");
-		/**
-		 * TEMPERATURA ESTERNA EFFETTIVA CACOLATA
-		 */
-		JLabel lblNewLabel_4 = new JLabel("Temperatura esterna effettiva :");
+		add(panel_5, "2, 10, 5, 1, left, fill");
+		panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JLabel lblNewLabel_4 = new JLabel("Temperatura esterna effettiva usata per il calcolo [\u00B0C] :");
+		lblNewLabel_4.setVerticalAlignment(SwingConstants.TOP);
 		panel_5.add(lblNewLabel_4);
 		
 		txtTemperaturaEsternaEffettiva = new JTextField();
+		txtTemperaturaEsternaEffettiva.setEditable(false);
 		panel_5.add(txtTemperaturaEsternaEffettiva);
 		txtTemperaturaEsternaEffettiva.setColumns(5);
-		
-		JLabel lblTermperaturaEsternaUtilizzata = new JLabel("Termperatura esterna utilizzata per il calcolo .");
-		add(lblTermperaturaEsternaUtilizzata, "6, 10");
 		
 		JPanel panel = new JPanel();
 		add(panel, "4, 12, fill, fill");
@@ -396,7 +365,7 @@ public class APAmbiente extends JPanel {
 		/**
 		 * QUOTA SUL LIVELLO DEL MARE PER IL CALCOLO DELLA PRESSONE ATMOSFERICA
 		 */
-		JLabel lblQuotam = new JLabel("Quota [m ]");
+		JLabel lblQuotam = new JLabel("Quota slm [m ]");
 		GridBagConstraints gbc_lblQuotam = new GridBagConstraints();
 		gbc_lblQuotam.anchor = GridBagConstraints.WEST;
 		gbc_lblQuotam.insets = new Insets(0, 0, 5, 5);
@@ -432,49 +401,103 @@ public class APAmbiente extends JPanel {
 		gbc_textField_1.gridy = 1;
 		panel.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
-		
-		JLabel lblMsg = new JLabel("New label");
-		add(lblMsg, "2, 14, 5, 1");
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblTermperaturaEsternaUtilizzata, lblLocalitPiVicina, comboBox, panel_3, lblNewLabel_3, textField_TCitVic, lblNewLabel, textField, panel_1, lblCorrezioneTemperatura, rdbtnComUrb, rdbtnPiccaggl, sp_pa, rdbtnEdificiIsolati, sp_ei, panel_2, lblNewLabel_5, lblNewLabel_2, lblDalPiano, sp_p, lblDifferenzaTemperatura, sp_dt, panel_4, lblDifferenzaDiQuota, spinner_5, lblDifferenzaTemperatura_1, txtDTperquota, panel_6, panel_5, lblNewLabel_4, txtTemperaturaEsternaEffettiva, panel, lblQuotam, spinner, lblNewLabel_1, textField_1, lblMsg}));
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblLocalitPiVicina, cbxLocPiuVicina, panel_3, lblNewLabel_3, textField_TCitVic, lblNewLabel, txtFCitta, panel_1, lblCorrezioneTemperatura, rdbtnComUrb, rdbtnPiccaggl, sp_pic_agg, rdbtnEdificiIsolati, panel_2, lblNewLabel_5, lblNewLabel_2, lblDalPiano, lblDifferenzaTemperatura, panel_4, lblDifferenzaTemperatura_1, panel_6, panel_5, lblNewLabel_4, panel, lblQuotam, spinner, lblNewLabel_1}));
 
+		init();
 	}
 
-	
-private void calcola(){
-	boolean checked=true;
-	String t1=textField_TCitVic.getText();
-	double d_t1=0;
-	try{
-		 d_t1=Double.valueOf(t1);
-	}catch(Exception e){
-		checked=false;
+	protected void impostTempEsterna() {
+		double T=project.TempEsterna();
+        txtTemperaturaEsternaEffettiva.setText(String.valueOf(T));		
 	}
-	
-	double d_t_ubicazione;
-	if(rdbtnPiccaggl.isSelected()){
-		JSpinner js=this.sp_pa;
-		d_t_ubicazione=(Double)js.getValue();
+
+	void init(){
+		Localita.getInstance().getlocalita();
 		
-	}else if(rdbtnEdificiIsolati.isSelected()){
-		JSpinner js=this.sp_ei;
-		d_t_ubicazione=(Double)js.getValue();
-	}else{
-		d_t_ubicazione=0;
-	}
-	String t2=this.txtDTperquota.getText();
-	double d_t2=0;
-	try{
-		d_t2=Double.valueOf(t2);
-	}catch(Exception e){
-		checked=false;
+		cbxLocPiuVicina.setSelectedItem(project.getLocalita_piu_vicina());
+		txtFCitta.setText(project.getLocalita());
+		sp_ed_isol.getModel().setValue(Double.valueOf(project.getCorrezEdifIsol()));
+		sp_pic_agg.getModel().setValue(Double.valueOf(project.getCorrezPiccAgg()));
+		rdbtnComUrb.setSelected(project.isComplUrb());
+		rdbtnEdificiIsolati.setSelected(project.isEdifIsol());
+		rdbtnPiccaggl.setSelected(project.isPiccAggl());
 	}
 	
-	if(checked=false){
-		
-		this.txtTemperaturaEsternaEffettiva.setText("ERRORE");
-	}else{
-		this.txtTemperaturaEsternaEffettiva.setText(String.valueOf(d_t1+d_t2+d_t_ubicazione));
+
+/**
+ * ChangeListener per JSpinner
+ */
+
+@Override
+public void stateChanged(ChangeEvent e) {
+	 if(e.getSource().equals(sp_ed_isol)) {
+		 project.setCorrezEdifIsol((Double)sp_ed_isol.getModel().getValue());
+		 impostTempEsterna();
+	 }else if(e.getSource().equals(sp_pic_agg)){
+		 project.setCorrezPiccAgg((Double)sp_pic_agg.getModel().getValue());
+		 impostTempEsterna();
+	 }else if(e.getSource().equals(sp_piano)){
+		 project.setDal_piano( (Integer)sp_piano.getModel().getValue()  );
+	 }else if(e.getSource().equals(sp_dtPianSup)){
+		 project.setDiff_temp_psup( (Double)sp_dtPianSup.getModel().getValue()    );
+	 }else if(e.getSource().equals(sp_corr_temp)){
+		 project.setCorrezTemp(  (Double)sp_corr_temp.getModel().getValue()    );
+		 impostTempEsterna();
+	 }
+ 	
+}//StateChanged
+
+/**
+ * ItemListener per CheckBox,JRadioButton  e ComboBox
+ */
+@Override
+public void itemStateChanged(ItemEvent e) {
+	 
+	 if(e.getSource().equals(rdbtnComUrb)) {
+		 //COMPLESSO URBANO
+		 if (e.getStateChange() == ItemEvent.SELECTED) {
+		        sp_pic_agg.setEnabled(false); // spinner piccolo agglomerato
+		        sp_ed_isol.setEnabled(false);// spinner edificio isolato
+		        project.setComplUrb(true);
+		        impostTempEsterna();
+		       
+		    }  else if (e.getStateChange() == ItemEvent.DESELECTED) {
+		    	project.setComplUrb(false);
+		    }
+	}  else if(e.getSource().equals(rdbtnPiccaggl)){
+			// PICCOLO AGGLOMERATO 
+		 if (e.getStateChange() == ItemEvent.SELECTED) {
+			 sp_pic_agg.setEnabled(true); // spinner piccolo agglomerato
+			 project.setPiccAggl(true);
+			 impostTempEsterna();
+		    }
+		    else if (e.getStateChange() == ItemEvent.DESELECTED) {
+		    	sp_pic_agg.setEnabled(false); // spinner piccolo agglomerato
+		    	 project.setPiccAggl(false);
+		    } 
+	}else if(e.getSource().equals(rdbtnEdificiIsolati)){
+		//EDIFICIO ISOLATO
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+			 sp_ed_isol.setEnabled(true);//SPINNER EDIFICIO ISOLATO
+			 project.setEdifIsol(true);
+			 impostTempEsterna();
+			 }
+		    else if (e.getStateChange() == ItemEvent.DESELECTED) {
+		    	project.setEdifIsol(false);
+		    	sp_ed_isol.setEnabled(false);//SPINNER EDIFICIO ISOLATO
+		    }
 	}
+	
+}// ItemStateChanged
+/**Intercettazione FormattedTextField */
+@Override
+public void propertyChange(PropertyChangeEvent evt) {
+	 Object source = evt.getSource();
+     if (source == txtFCitta) {
+    	 project.setLocalita(txtFCitta.getText());
+     }
 }
+
+
 	
 }

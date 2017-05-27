@@ -7,6 +7,7 @@ public static final String[] sezioni=new String[] {"Circolare", "Rettangolare", 
 public static final int CIRCOLARE=0;
 public static final int RETTANGOLARE=1;
 public static final int QUADRATA=2;
+ 
 //Tramite singleton
 String cittavicine[]=Localita.getInstance().getlocalita();
 
@@ -15,14 +16,18 @@ String cittavicine[]=Localita.getInstance().getlocalita();
 	  String descrizione="Descrizione del progetto ";
 	 
 	  /* Ambiente */
-  	String localita=cittavicine[0];
-	String localita_piu_vicina="";
+  	String localita="Nome citta";
+	String localita_piu_vicina=cittavicine[0];
 	double temp_esterna_C=0.0;
 	double diff_temp_psup=0.0;
 	int dal_piano=1;
 	double quota_slm=0.0;
-	boolean apcomp=false;
-	int apcompSez=100;//cmq
+	boolean complUrb=true;
+	boolean piccAggl=false;
+	boolean edifIsol=false;
+	double correzPiccAgg=0;
+	double correzEdifIsol=0;
+	double correzTemp=0;
 			
 	
 	/* Edificio */
@@ -31,6 +36,8 @@ String cittavicine[]=Localita.getInstance().getlocalita();
 	  int maxNpiani=10;
 	  String sezioneCanna=sezioni[QUADRATA];
 	  double perdlocCam=0.1;
+	  boolean apcomp=false;
+	  int apcompSez=100;//cmq
 
 	public double getPerdlocCam() {
 		return perdlocCam;
@@ -42,11 +49,16 @@ String cittavicine[]=Localita.getInstance().getlocalita();
 
 	public Project() {
 		super();
-		
-		
-		
 	}
 
+	public double TempEsterna(){
+		double T=Localita.getInstance().getTemperatura(localita_piu_vicina);
+		T=piccAggl?T+correzPiccAgg:T;
+		T=edifIsol?T+correzEdifIsol:T;
+		T+=correzTemp;		
+		return T;
+	}
+	
 	public String getDenominazione() {
 		return denominazione;
 	}
@@ -157,6 +169,54 @@ String cittavicine[]=Localita.getInstance().getlocalita();
 
 	public void setApcompSez(int apcompSez) {
 		this.apcompSez = apcompSez;
+	}
+
+	public boolean isComplUrb() {
+		return complUrb;
+	}
+
+	public void setComplUrb(boolean complUrb) {
+		this.complUrb = complUrb;
+	}
+
+	public boolean isPiccAggl() {
+		return piccAggl;
+	}
+
+	public void setPiccAggl(boolean piccAggl) {
+		this.piccAggl = piccAggl;
+	}
+
+	public boolean isEdifIsol() {
+		return edifIsol;
+	}
+
+	public void setEdifIsol(boolean edifIsol) {
+		this.edifIsol = edifIsol;
+	}
+
+	public double getCorrezPiccAgg() {
+		return correzPiccAgg;
+	}
+
+	public void setCorrezPiccAgg(double correzPiccAgg) {
+		this.correzPiccAgg = correzPiccAgg;
+	}
+
+	public double getCorrezEdifIsol() {
+		return correzEdifIsol;
+	}
+
+	public void setCorrezEdifIsol(double correzEdifIsol) {
+		this.correzEdifIsol = correzEdifIsol;
+	}
+
+	public double getCorrezTemp() {
+		return correzTemp;
+	}
+
+	public void setCorrezTemp(double correzTemp) {
+		this.correzTemp = correzTemp;
 	}
 
 	
