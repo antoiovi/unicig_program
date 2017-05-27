@@ -46,6 +46,12 @@ add(apinputdata,IMenu.inputdata);
 add(apoutputdata,IMenu.outputdata);
 
 	}
+	
+	@Override
+	public void changedNPiani() {
+		System.out.println("changed numero piani");
+		
+	}
 
 	
 	

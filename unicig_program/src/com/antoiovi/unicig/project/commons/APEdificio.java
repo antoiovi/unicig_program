@@ -213,6 +213,12 @@ public void stateChanged(ChangeEvent arg0) {
 			lblNumeroDiTratti.setVisible(false);
 		}
 		project.setNpiani((Integer)spinnerNPiani.getModel().getValue());
+		APanel_Unicig parent=(APanel_Unicig)this.getParent();
+		/*Bisogna fare il che per la prima chiaata è null */
+		if(parent!=null){
+			parent.changedNPiani();
+		}
+	 	 
 	}else if (arg0.getSource().equals(spinnerNumeroDiTratti)){
 		project.setNumtratti((Integer)spinnerNumeroDiTratti.getModel().getValue());
 	}

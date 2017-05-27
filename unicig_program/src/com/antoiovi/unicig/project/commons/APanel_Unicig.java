@@ -76,6 +76,8 @@ public abstract class APanel_Unicig extends JPanel implements com.antoiovi.unici
 		
 	}
 	
+	public   void changedNPiani(){};
+	
 	/**
 	 * IMPLEMENTAZIONE DEI METODI DI IMENUBAR PER CONSENTIRE LO SCORRIMENTO DEI PANNELLI
 	 */
