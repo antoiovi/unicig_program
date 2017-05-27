@@ -1,22 +1,29 @@
 package com.antoiovi.unicig.project;
 
+import com.antoiovi.unicig.project.tabelle.Localita;
+
 public class Project {
 public static final String[] sezioni=new String[] {"Circolare", "Rettangolare", "Quadrato"};
 public static final int CIRCOLARE=0;
 public static final int RETTANGOLARE=1;
 public static final int QUADRATA=2;
+//Tramite singleton
+String cittavicine[]=Localita.getInstance().getlocalita();
 
 	/*Dati */
-	  String denominazione="";
-	  String descrizione="";
+	  String denominazione="Nome del progetto";
+	  String descrizione="Descrizione del progetto ";
 	 
 	  /* Ambiente */
-  	String localita="";
+  	String localita=cittavicine[0];
 	String localita_piu_vicina="";
-	double temp_esterna_C;
+	double temp_esterna_C=0.0;
 	double diff_temp_psup=0.0;
 	int dal_piano=1;
 	double quota_slm=0.0;
+	boolean apcomp=false;
+	int apcompSez=100;//cmq
+			
 	
 	/* Edificio */
 	  int npiani=3;
@@ -134,6 +141,22 @@ public static final int QUADRATA=2;
 
 	public void setNumtratti(int numtratti) {
 		this.numtratti = numtratti;
+	}
+
+	public boolean isApcomp() {
+		return apcomp;
+	}
+
+	public void setApcomp(boolean apcomp) {
+		this.apcomp = apcomp;
+	}
+
+	public int getApcompSez() {
+		return apcompSez;
+	}
+
+	public void setApcompSez(int apcompSez) {
+		this.apcompSez = apcompSez;
 	}
 
 	

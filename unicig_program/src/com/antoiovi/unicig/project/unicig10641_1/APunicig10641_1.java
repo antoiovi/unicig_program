@@ -53,6 +53,8 @@ add(apoutputdata,IMenu.outputdata);
 		
 	}
 
-	
-	
+	@Override
+	public void	changedApCompens(){
+		System.out.println("changed apertura compensazione");
+	}
 }

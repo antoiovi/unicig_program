@@ -32,9 +32,12 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import javax.swing.JCheckBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 
-public class APEdificio extends JPanel implements PropertyChangeListener,ChangeListener,ActionListener{
+public class APEdificio extends JPanel implements PropertyChangeListener,ChangeListener,ActionListener,ItemListener{
 
 	Project project;
 	private JSpinner spinnerNPiani;
@@ -43,6 +46,9 @@ public class APEdificio extends JPanel implements PropertyChangeListener,ChangeL
 	private JSpinner spinnerNumeroDiTratti;
 	private JLabel lblNumeroDiTratti;
 	JSpinner.DefaultEditor npiani;
+	private JCheckBox chckbxAperturaCompensazione;
+	private JSpinner sp_SAComp;
+	private JLabel lblSzApComp;
 	/**
 	 * Create the panel.
 	 */
@@ -66,9 +72,9 @@ public class APEdificio extends JPanel implements PropertyChangeListener,ChangeL
 		add(panel_1, "3, 2, fill, fill");
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		JLabel lblNumeroPiani = new JLabel("Numero piani");
@@ -173,6 +179,32 @@ public class APEdificio extends JPanel implements PropertyChangeListener,ChangeL
 		gbc_ftxfPerdLocCom.gridx = 2;
 		gbc_ftxfPerdLocCom.gridy = 4;
 		panel_1.add(ftxfPerdLocCom, gbc_ftxfPerdLocCom);
+		
+		chckbxAperturaCompensazione = new JCheckBox("Apertura compensazione");
+		chckbxAperturaCompensazione.addItemListener(this);
+		GridBagConstraints gbc_chckbxAperturaCompensazione = new GridBagConstraints();
+		gbc_chckbxAperturaCompensazione.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxAperturaCompensazione.gridx = 0;
+		gbc_chckbxAperturaCompensazione.gridy = 6;
+		panel_1.add(chckbxAperturaCompensazione, gbc_chckbxAperturaCompensazione);
+		
+		lblSzApComp = new JLabel("Sezione apertura compensazone [ cmq]");
+		GridBagConstraints gbc_lblSzApComp = new GridBagConstraints();
+		gbc_lblSzApComp.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSzApComp.gridx = 1;
+		gbc_lblSzApComp.gridy = 6;
+		panel_1.add(lblSzApComp, gbc_lblSzApComp);
+		
+		sp_SAComp = new JSpinner();
+		sp_SAComp.addChangeListener(this);
+		sp_SAComp.setModel(new SpinnerNumberModel(100, 50, 400, 5));
+		GridBagConstraints gbc_sp_SAComp = new GridBagConstraints();
+		gbc_sp_SAComp.fill = GridBagConstraints.HORIZONTAL;
+		gbc_sp_SAComp.gridwidth = 2;
+		gbc_sp_SAComp.insets = new Insets(0, 0, 0, 5);
+		gbc_sp_SAComp.gridx = 2;
+		gbc_sp_SAComp.gridy = 6;
+		panel_1.add(sp_SAComp, gbc_sp_SAComp);
 
 	
 	init();
@@ -185,6 +217,9 @@ private void init(){
 	
 	 spinnerNumeroDiTratti.setVisible(false);
 	 lblNumeroDiTratti.setVisible(false);
+	 
+	 chckbxAperturaCompensazione.setSelected(project.isApcomp());
+	 sp_SAComp.setValue(Integer.valueOf(project.getApcompSez()));
 }
 /*Per intercettare i JFormattedTextField  */
 @Override
@@ -199,7 +234,7 @@ public void propertyChange(PropertyChangeEvent evt) {
 	  
 	
 }
-/*  Per lo spinner bisogna implementare ChangeListener */
+/*  Per lo SPINNER bisogna implementare ChangeListener */
 
 @Override
 public void stateChanged(ChangeEvent arg0) {
@@ -223,7 +258,7 @@ public void stateChanged(ChangeEvent arg0) {
 		project.setNumtratti((Integer)spinnerNumeroDiTratti.getModel().getValue());
 	}
 }
-/* Per intercettare il combo box bisogna implementare ActionListener OPPURE ItemListener
+/* Per intercettare il COMBOBOX bisogna implementare ActionListener OPPURE ItemListener
        */
 @Override
 public void actionPerformed(ActionEvent arg0) {
@@ -231,6 +266,28 @@ public void actionPerformed(ActionEvent arg0) {
 		project.setSezioneCanna((String)comboBoxSezione.getModel().getSelectedItem());
 		}
 	}
+/**
+ * CHECKBOX
+ * @param e
+ */
+@Override
+public void itemStateChanged(ItemEvent e) {
+	APanel_Unicig parent=(APanel_Unicig)this.getParent();
+	  if(e.getSource().equals(chckbxAperturaCompensazione)){
+			if(chckbxAperturaCompensazione.isSelected()){
+				this.sp_SAComp.setEnabled(true);
+				project.setApcomp(true);
+				}else{
+					this.sp_SAComp.setEnabled(false);
+					project.setApcomp(false);
+					
+			}
+			/*Bisogna fare il che per la prima chiaata è null */
+			if(parent!=null){
+				parent.changedApCompens();
+			}
+		}  
+	}//Item state changed
 	
 }
 
