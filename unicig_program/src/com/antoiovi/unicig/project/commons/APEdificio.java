@@ -37,7 +37,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
 
-public class APEdificio extends JPanel implements PropertyChangeListener,ChangeListener,ActionListener,ItemListener{
+public class APEdificio extends JPanel implements PropertyChangeListener,ChangeListener ,ItemListener{
 
 	Project project;
 	private JSpinner spinnerNPiani;
@@ -132,6 +132,7 @@ public class APEdificio extends JPanel implements PropertyChangeListener,ChangeL
 		gbc_comboBoxSezione.gridy = 2;
 		panel_1.add(comboBoxSezione, gbc_comboBoxSezione);
 		comboBoxSezione.getModel().setSelectedItem(project.getSezioneCanna());
+		comboBoxSezione.addItemListener(this);
 		
 		JLabel lblComignolo = new JLabel("Comignolo");
 		GridBagConstraints gbc_lblComignolo = new GridBagConstraints();
@@ -258,14 +259,7 @@ public void stateChanged(ChangeEvent arg0) {
 		project.setNumtratti((Integer)spinnerNumeroDiTratti.getModel().getValue());
 	}
 }
-/* Per intercettare il COMBOBOX bisogna implementare ActionListener OPPURE ItemListener
-       */
-@Override
-public void actionPerformed(ActionEvent arg0) {
-	if(arg0.getSource().equals(comboBoxSezione)){
-		project.setSezioneCanna((String)comboBoxSezione.getModel().getSelectedItem());
-		}
-	}
+
 /**
  * CHECKBOX
  * @param e
@@ -286,7 +280,13 @@ public void itemStateChanged(ItemEvent e) {
 			if(parent!=null){
 				parent.changedApCompens();
 			}
-		}  
+		} else if(e.getSource().equals(comboBoxSezione)){
+			project.setSezioneCanna((String)comboBoxSezione.getModel().getSelectedItem());
+			if(parent!=null){
+				parent.changedSezioneCanna();;
+			}
+			} 
+	
 	}//Item state changed
 	
 }

@@ -57,4 +57,8 @@ add(apoutputdata,IMenu.outputdata);
 	public void	changedApCompens(){
 		System.out.println("changed apertura compensazione");
 	}
+	@Override
+	public void changedSezioneCanna(){
+		System.out.println("changed Sezione Canna");
+	}
 }
