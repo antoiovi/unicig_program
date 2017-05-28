@@ -61,7 +61,7 @@ import java.awt.FlowLayout;
 public class APAmbiente extends JPanel implements ItemListener, ChangeListener,PropertyChangeListener {
 	private JFormattedTextField txtFCitta;
 	private JTextField textField_TCitVic;
-	private JTextField textField_1;
+	private JTextField txtfPatm;
 	private JTextField txtTemperaturaEsternaEffettiva;
 	private final ButtonGroup btgAmbest = new ButtonGroup();
 	private JRadioButton rdbtnComUrb;
@@ -76,6 +76,7 @@ public class APAmbiente extends JPanel implements ItemListener, ChangeListener,P
 	   Project project;
 	   private JSpinner sp_corr_temp;
 	   private JComboBox cbxLocPiuVicina;
+	   private JSpinner sp_quota_slm;
 	
 
 	/**
@@ -350,6 +351,7 @@ public class APAmbiente extends JPanel implements ItemListener, ChangeListener,P
 		panel_5.add(lblNewLabel_4);
 		
 		txtTemperaturaEsternaEffettiva = new JTextField();
+		txtTemperaturaEsternaEffettiva.setBackground(Color.YELLOW);
 		txtTemperaturaEsternaEffettiva.setEditable(false);
 		panel_5.add(txtTemperaturaEsternaEffettiva);
 		txtTemperaturaEsternaEffettiva.setColumns(5);
@@ -373,14 +375,15 @@ public class APAmbiente extends JPanel implements ItemListener, ChangeListener,P
 		gbc_lblQuotam.gridy = 0;
 		panel.add(lblQuotam, gbc_lblQuotam);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(0, 0, 1000, 50));
-		GridBagConstraints gbc_spinner = new GridBagConstraints();
-		gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
-		gbc_spinner.insets = new Insets(0, 0, 5, 0);
-		gbc_spinner.gridx = 1;
-		gbc_spinner.gridy = 0;
-		panel.add(spinner, gbc_spinner);
+		sp_quota_slm = new JSpinner();
+		sp_quota_slm.addChangeListener(this);
+		sp_quota_slm.setModel(new SpinnerNumberModel(0, 0, 2000, 50));
+		GridBagConstraints gbc_sp_quota_slm = new GridBagConstraints();
+		gbc_sp_quota_slm.fill = GridBagConstraints.HORIZONTAL;
+		gbc_sp_quota_slm.insets = new Insets(0, 0, 5, 0);
+		gbc_sp_quota_slm.gridx = 1;
+		gbc_sp_quota_slm.gridy = 0;
+		panel.add(sp_quota_slm, gbc_sp_quota_slm);
 		
 		JLabel lblNewLabel_1 = new JLabel("Pressione atmosferica");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -390,30 +393,29 @@ public class APAmbiente extends JPanel implements ItemListener, ChangeListener,P
 		gbc_lblNewLabel_1.gridy = 1;
 		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setBackground(Color.WHITE);
-		textField_1.setEditable(false);
-		textField_1.setEnabled(false);
-		textField_1.setDisabledTextColor(Color.BLACK);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 1;
-		panel.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblLocalitPiVicina, cbxLocPiuVicina, panel_3, lblNewLabel_3, textField_TCitVic, lblNewLabel, txtFCitta, panel_1, lblCorrezioneTemperatura, rdbtnComUrb, rdbtnPiccaggl, sp_pic_agg, rdbtnEdificiIsolati, panel_2, lblNewLabel_5, lblNewLabel_2, lblDalPiano, lblDifferenzaTemperatura, panel_4, lblDifferenzaTemperatura_1, panel_6, panel_5, lblNewLabel_4, panel, lblQuotam, spinner, lblNewLabel_1}));
+		txtfPatm = new JTextField();
+		txtfPatm.setBackground(Color.YELLOW);
+		txtfPatm.setEditable(false);
+		txtfPatm.setDisabledTextColor(Color.BLACK);
+		GridBagConstraints gbc_txtfPatm = new GridBagConstraints();
+		gbc_txtfPatm.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtfPatm.gridx = 1;
+		gbc_txtfPatm.gridy = 1;
+		panel.add(txtfPatm, gbc_txtfPatm);
+		txtfPatm.setColumns(10);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblLocalitPiVicina, cbxLocPiuVicina, panel_3, lblNewLabel_3, textField_TCitVic, lblNewLabel, txtFCitta, panel_1, lblCorrezioneTemperatura, rdbtnComUrb, rdbtnPiccaggl, sp_pic_agg, rdbtnEdificiIsolati, panel_2, lblNewLabel_5, lblNewLabel_2, lblDalPiano, lblDifferenzaTemperatura, panel_4, lblDifferenzaTemperatura_1, panel_6, panel_5, lblNewLabel_4, panel, lblQuotam, sp_quota_slm, lblNewLabel_1}));
 
 		init();
 	}
-
+/**
+ * Imposta il  campo per visualizzare la temperatura effetiva di calcolo
+ */
 	protected void impostTempEsterna() {
 		double T=project.TempEsterna();
         txtTemperaturaEsternaEffettiva.setText(String.valueOf(T));		
 	}
 
 	void init(){
-		Localita.getInstance().getlocalita();
-		
 		cbxLocPiuVicina.setSelectedItem(project.getLocalita_piu_vicina());
 		txtFCitta.setText(project.getLocalita());
 		sp_ed_isol.getModel().setValue(Double.valueOf(project.getCorrezEdifIsol()));
@@ -421,6 +423,11 @@ public class APAmbiente extends JPanel implements ItemListener, ChangeListener,P
 		rdbtnComUrb.setSelected(project.isComplUrb());
 		rdbtnEdificiIsolati.setSelected(project.isEdifIsol());
 		rdbtnPiccaggl.setSelected(project.isPiccAggl());
+		
+		sp_corr_temp.getModel().setValue(Double.valueOf(project.getCorrezTemp()));
+		
+		sp_dtPianSup.getModel().setValue(Double.valueOf(project.getDiff_temp_psup()));
+		sp_piano.getModel().setValue(Integer.valueOf(project.getDal_piano()));
 	}
 	
 
@@ -443,6 +450,10 @@ public void stateChanged(ChangeEvent e) {
 	 }else if(e.getSource().equals(sp_corr_temp)){
 		 project.setCorrezTemp(  (Double)sp_corr_temp.getModel().getValue()    );
 		 impostTempEsterna();
+	 }else if(e.getSource().equals(sp_quota_slm)){
+		 project.setQuota_slm((Integer)sp_quota_slm.getModel().getValue() );
+		 txtfPatm.setText(String.valueOf(project.PressAtm()));
+		 
 	 }
  	
 }//StateChanged
@@ -489,7 +500,7 @@ public void itemStateChanged(ItemEvent e) {
 	}
 	
 }// ItemStateChanged
-/**Intercettazione FormattedTextField */
+/**Intercettazione FormattedTextField value changed*/
 @Override
 public void propertyChange(PropertyChangeEvent evt) {
 	 Object source = evt.getSource();
