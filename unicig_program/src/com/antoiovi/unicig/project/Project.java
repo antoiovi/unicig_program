@@ -21,13 +21,14 @@ String cittavicine[]=Localita.getInstance().getlocalita();
 	double temp_esterna_C=0.0;
 	double diff_temp_psup=0.0;
 	int dal_piano=1;
-	double quota_slm=0.0;
+	int quota_slm=0;// metri
 	boolean complUrb=true;
 	boolean piccAggl=false;
 	boolean edifIsol=false;
 	double correzPiccAgg=0;
 	double correzEdifIsol=0;
 	double correzTemp=0;
+	 
 			
 	
 	/* Edificio */
@@ -59,6 +60,9 @@ String cittavicine[]=Localita.getInstance().getlocalita();
 		return T;
 	}
 	
+	public double PressAtm(){
+		return 10e5;
+	}
 	public String getDenominazione() {
 		return denominazione;
 	}
@@ -115,11 +119,12 @@ String cittavicine[]=Localita.getInstance().getlocalita();
 		this.dal_piano = dal_piano;
 	}
 
-	public double getQuota_slm() {
+	
+	public int getQuota_slm() {
 		return quota_slm;
 	}
 
-	public void setQuota_slm(double quota_slm) {
+	public void setQuota_slm(int quota_slm) {
 		this.quota_slm = quota_slm;
 	}
 
