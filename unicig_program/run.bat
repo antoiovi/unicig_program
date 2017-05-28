@@ -1,0 +1,1 @@
+java -cp target;.\resources\forms-1.3.0.jar;uniciglib.jar  com.antoiovi.unicig.project.unicig10641_1.Unicig10641_1Frame
