@@ -1,5 +1,8 @@
 package com.unicig.project;
 import javax.swing.JPanel;
+
+import com.unicig.project.typec1.APCondotti;
+
 import java.awt.CardLayout;
 
 public class APunicig10641_1 extends APanel_Unicig implements IMenu {
@@ -26,11 +29,14 @@ apedificio=new JPanel();
 apcaldaie=new JPanel();
 apinputdata=new JPanel();
 apoutputdata=new JPanel();
-apcondotti=new JPanel();
+//apcondotti=new Condotti();
+apcondotti=new APCondotti();
+
 apcanali=new JPanel();
 
 
-
+//Add to CardLayout the panel and its name
+// with its name it will be called in APanel_Unicig
 add(apdati,IMenu.dati);
 add(apambiente,IMenu.ambiente);
 add(apedificio,IMenu.edificio);
