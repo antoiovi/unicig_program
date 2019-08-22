@@ -1,6 +1,7 @@
 package com.unicig.project;
 import javax.swing.JPanel;
 
+import com.unicig.project.typec1.APCanals;
 import com.unicig.project.typec1.APCondotti;
 
 import java.awt.CardLayout;
@@ -32,7 +33,7 @@ apoutputdata=new JPanel();
 //apcondotti=new Condotti();
 apcondotti=new APCondotti();
 
-apcanali=new JPanel();
+apcanali=new APCanals();
 
 
 //Add to CardLayout the panel and its name

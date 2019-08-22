@@ -165,12 +165,14 @@ public class APCondotti extends JPanel {
 
 		
 	// Add INPUT PANEL
-	this.add(panel_1,BorderLayout.CENTER);
-	JPanel panel_top=new JPanel();
-	panel_top.setLayout(new BorderLayout(0,0));
+		JScrollPane scrollpane=new JScrollPane(panel_1);
+	this.add(scrollpane,BorderLayout.CENTER);
+	
 	
 	// Set Title
 	JLabel title=new JLabel("CONDOTTI");
+	JPanel panel_top=new JPanel();
+	panel_top.setLayout(new BorderLayout(0,0));
 	panel_top.add(title,BorderLayout.CENTER);
 	this.add(panel_top,BorderLayout.NORTH);
 
@@ -186,7 +188,31 @@ public class APCondotti extends JPanel {
 		 imageLabel.setText("NULL IMAGE");
 	}
 	panelLable.add(imageLabel,BorderLayout.WEST);
-	this.add(panelLable,BorderLayout.SOUTH);
+	
+	int WIDIMG=3;
+	int XIMG=1;
+	GridBagConstraints gbc_panel_lbl = new GridBagConstraints();
+	gbc_panel_lbl.gridheight = 1;
+	gbc_panel_lbl.gridwidth = WIDIMG;
+	gbc_panel_lbl.insets = new Insets(0, 0, 5, 5);
+	gbc_panel_lbl.fill = GridBagConstraints.BELOW_BASELINE;
+	gbc_panel_lbl.gridx = XIMG;
+	gbc_panel_lbl.gridy = NROWS;
+	panel_1.add(panelLable, gbc_panel_lbl);
+	
+	// PANEL HELP
+		JPanel panelHelp=new JPanel();
+		panelHelp.setLayout(new BorderLayout(0,0));
+		GridBagConstraints gbc_panel_help = new GridBagConstraints();
+		gbc_panel_help.gridheight = 1;
+		gbc_panel_help.gridwidth = 5;
+		gbc_panel_help.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_help.fill = GridBagConstraints.BELOW_BASELINE;
+		gbc_panel_help.gridx = XIMG+WIDIMG;
+		gbc_panel_help.gridy = NROWS;
+		panel_1.add(panelHelp, gbc_panel_help);
+	
+	//this.add(panelLable,BorderLayout.SOUTH);
 
 	// Set section Circular
 	this.setSectionC();
