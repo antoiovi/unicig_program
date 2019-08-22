@@ -27,7 +27,7 @@ public class APCondotti extends JPanel {
 	int NCOL;
 	int NROWS;
 	int NLABELS;
-	static final int NFLOORS=6;
+	static final int MAX_FLOORS=6;
 	static final String titles[]= {"Height [m]","Diameter[mm]","Side A[mm]","Side B[mm]","Thickness[mm]","Curve red. fact.","% Contact Extern"};
 	static final int HEIGHT=0;
 	static final int DIAM=1;
@@ -40,16 +40,18 @@ public class APCondotti extends JPanel {
 	JLabel rownames[];
 	private JSpinner[][] spinners;
 	private int nFloors;
-	static final  int MAX_FLOORS=6;
+	private JSpinner spinnerT;
+	private JSpinner spinnerR;
+	//static final  int MAX_FLOORS=6;
 	public APCondotti() {
 		NLABELS=titles.length;
 		
 		headers=new JLabel[NLABELS];
-		rownames=new JLabel[NFLOORS];
+		rownames=new JLabel[MAX_FLOORS];
 		NCOL=NLABELS+2;
-		NROWS=NFLOORS+2;
+		NROWS=MAX_FLOORS+2;
 		
-		spinners=new JSpinner[NFLOORS][NLABELS];
+		spinners=new JSpinner[MAX_FLOORS][NLABELS];
 		
 		
 		setLayout(new BorderLayout(0, 0));
@@ -88,7 +90,7 @@ public class APCondotti extends JPanel {
 		}
 		
 
-		for(int ir=0;ir<(NFLOORS);ir++) {
+		for(int ir=0;ir<(MAX_FLOORS);ir++) {
 			rownames[ir]=new JLabel("Floor "+String.valueOf(ir));
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -98,7 +100,7 @@ public class APCondotti extends JPanel {
 			panel_1.add(rownames[ir], gbc_lblNewLabel);
 		}
 		for(int ir=0;ir<(NLABELS);ir++) {
-			for(int fr=0;fr<(NFLOORS);fr++) {
+			for(int fr=0;fr<(MAX_FLOORS);fr++) {
 				SpinnerNumberModel spinnerModel=new SpinnerNumberModel(100.0,80.0,300.0,10.0);
 
 				switch (ir){
@@ -151,13 +153,13 @@ public class APCondotti extends JPanel {
 		gbc_panel.gridy = NROWS-1;
 		panel_1.add(panel2, gbc_panel);
 		JLabel lblRough=new JLabel("Rougness [mm ]");
-		JSpinner spinnerR = new JSpinner(new SpinnerNumberModel(0.2,0.01,2.0,0.01));
+		 spinnerR = new JSpinner(new SpinnerNumberModel(0.2,0.01,2.0,0.01));
 		panel2.add(lblRough);
 		panel2.add(spinnerR);
 //THERMAL Conductivity
 		// Roghness 
 		JLabel lblTherm=new JLabel("Thermal conductivity");
-		JSpinner spinnerT = new JSpinner(new SpinnerNumberModel(0.5,0.0,10.0,0.1));
+		spinnerT = new JSpinner(new SpinnerNumberModel(0.5,0.0,10.0,0.1));
 		panel2.add(lblTherm);
 		panel2.add(spinnerT);
 
@@ -187,7 +189,7 @@ public class APCondotti extends JPanel {
 	this.add(panelLable,BorderLayout.SOUTH);
 
 	// Set section Circular
-	this.setSectionR();
+	this.setSectionC();
 	this.setNFloors(3);
 	}
 
@@ -198,7 +200,7 @@ public class APCondotti extends JPanel {
 	private void setSectionC() {
 		for(int ir=0;ir<(NLABELS);ir++) {
 			
-			for(int fr=0;fr<(NFLOORS);fr++) {
+			for(int fr=0;fr<(MAX_FLOORS);fr++) {
 				if(ir==SIDEA ||ir==SIDEB)
 					spinners[fr][ir].setEnabled(false);
 				if(ir==DIAM)
@@ -213,7 +215,7 @@ public class APCondotti extends JPanel {
 	private void setSectionR() {
 		for(int ir=0;ir<(NLABELS);ir++) {
 			
-			for(int fr=0;fr<(NFLOORS);fr++) {
+			for(int fr=0;fr<(MAX_FLOORS);fr++) {
 				if(ir==SIDEA ||ir==SIDEB)
 					spinners[fr][ir].setEnabled(true);
 				if(ir==DIAM)
@@ -227,7 +229,7 @@ private void setNFloors(int nFloors) {
 	if(nFloors<1 || nFloors>MAX_FLOORS) return;
 	this.nFloors=nFloors;
 		for(int ir=0;ir<(NLABELS);ir++) {
-			for(int fr=0;fr<(NFLOORS);fr++) {
+			for(int fr=0;fr<(MAX_FLOORS);fr++) {
 				if(fr>=nFloors)
 					spinners[fr][ir].setEnabled(false);
 				else
@@ -238,12 +240,25 @@ private void setNFloors(int nFloors) {
 }	
 		
 	
-	
+private void getData(ProjectC1 project) {
+		for(int ir=0;ir<(NLABELS);ir++) {
+			for(int fr=0;fr<(MAX_FLOORS);fr++) {
+				Double value=(Double)spinners[0][ir].getValue();
+				project.conduct[ir][fr]=value.doubleValue();
+			}
+			Double value=(Double)spinnerT.getValue();
+			project.condCondTerm=value.doubleValue();
+			value=(Double)spinnerR.getValue();
+			project.condRoug=value.doubleValue();
+	}
+
+}	
+
 private class ActionCopy implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		for(int ir=0;ir<(NLABELS);ir++) {
-			for(int fr=1;fr<(NFLOORS);fr++) {
+			for(int fr=1;fr<(MAX_FLOORS);fr++) {
 				spinners[fr][ir].getModel().setValue(spinners[0][ir].getValue());
 			}
 				
