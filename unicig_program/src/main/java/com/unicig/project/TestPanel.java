@@ -6,19 +6,20 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
-public class Condotti extends JPanel {
+public class TestPanel extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public Condotti() {
+	public TestPanel() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JLabel lblNewLabel = new JLabel("New label");
@@ -50,6 +51,7 @@ public class Condotti extends JPanel {
 		add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
 		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(15, 10, 20, 1));
 		GridBagConstraints gbc_spinner = new GridBagConstraints();
 		gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spinner.insets = new Insets(0, 0, 5, 5);
@@ -103,10 +105,19 @@ public class Condotti extends JPanel {
 		
 		JLabel lblNewLabel_8 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
-		gbc_lblNewLabel_8.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_8.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_8.gridx = 0;
 		gbc_lblNewLabel_8.gridy = 6;
 		add(lblNewLabel_8, gbc_lblNewLabel_8);
+		
+		JPanel panel = new JPanel();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.gridwidth = 3;
+		gbc_panel.insets = new Insets(0, 0, 0, 5);
+		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel.gridx = 1;
+		gbc_panel.gridy = 7;
+		add(panel, gbc_panel);
 
 	}
 
