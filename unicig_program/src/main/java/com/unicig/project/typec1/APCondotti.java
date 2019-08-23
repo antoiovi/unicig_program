@@ -294,8 +294,8 @@ static final String RECT="RECT";
 	public void project_Data(ProjectC1 project) {
 		for (int ir = 0; ir < (NLABELS); ir++) {
 			for (int fr = 0; fr < (MAX_FLOORS); fr++) {
-				Double value = (Double) spinners[0][ir].getValue();
-				project.conduct[ir][fr] = value.doubleValue();
+				Double value = (Double) spinners[fr][ir].getValue();
+				project.conduct[fr][ir] = value.doubleValue();
 			}
 			Double value = (Double) spinnerT.getValue();
 			project.condCondTerm = value.doubleValue();

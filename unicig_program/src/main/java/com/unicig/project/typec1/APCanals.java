@@ -261,16 +261,16 @@ public class APCanals extends JPanel {
 		}
 	}
 
-	private void getData(ProjectC1 project) {
+	public void project_Data(ProjectC1 project) {
 		for (int ir = 0; ir < (NLABELS); ir++) {
 			for (int fr = 0; fr < (MAX_FLOORS); fr++) {
-				Double value = (Double) spinners[0][ir].getValue();
-				project.conduct[ir][fr] = value.doubleValue();
+				Double value = (Double) spinners[fr][ir].getValue();
+				project.canal[fr][ir] = value.doubleValue();
 			}
 			Double value = (Double) spinnerT.getValue();
-			project.condCondTerm = value.doubleValue();
+			project.canalCondTerm = value.doubleValue();
 			value = (Double) spinnerR.getValue();
-			project.condRoug = value.doubleValue();
+			project.canalRoug = value.doubleValue();
 		}
 
 	}

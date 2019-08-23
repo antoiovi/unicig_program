@@ -62,6 +62,21 @@ add(apoutputdata,IMenu.outputdata);
 		}else if(name.equals(IMenu.condotti)) {
 			APCondotti ap=(APCondotti)apcondotti;
 			ap.project_Data(projectc1);
+			double conduct[][]=projectc1.conduct;
+			int n=projectc1.conduct[0].length;
+			int m=projectc1.conduct.length;
+			//log(String.format("conduct.lenght: %d \tconduct[0].lenght : %d",m,n));
+			/*for(int ir=0;ir<conduct.length;ir++) {
+				for(int am=0;am<conduct[ir].length;am++) {
+					log(String.format("conduct[%d][%d]= %f",ir,am,projectc1.conduct[ir][am]));
+				}
+			}*/
+			
 		}
 	}
+
+	private void log(String s) {
+		System.out.println(s);
+	}
+
 }

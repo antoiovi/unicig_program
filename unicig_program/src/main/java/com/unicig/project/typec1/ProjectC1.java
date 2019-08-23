@@ -18,12 +18,22 @@ public class ProjectC1  {
 	public double conduct[][];
 	public double condRoug;
 	public double condCondTerm;
+	//Second pipe
+	public double canal[][];
+	public double canalRoug;
+	public double canalCondTerm;
 	
 	
 	public ProjectC1() {
 		super();
 		conduct=new double[MAX_FLOORS+2][10];
-		
+		canal=new double[MAX_FLOORS+2][10];
+		for(int ir=0;ir<conduct.length;ir++) {
+			for(int am=0;am<conduct[ir].length;am++) {
+				conduct[ir][am]=0.0;
+				canal[ir][am]=0.0;
+			}
+		}
 	}
 	
 	
