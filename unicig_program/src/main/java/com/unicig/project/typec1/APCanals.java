@@ -194,7 +194,7 @@ public class APCanals extends JPanel {
 		panelLable.setLayout(new BorderLayout(0, 0));
 		JLabel imageLabel = new JLabel();
 		try {
-			ImageIcon image = new ImageIcon(APMenubar.class.getResource("image/InputCondotti.gif"));
+			ImageIcon image = new ImageIcon(APMenubar.class.getResource("image/InputCanals.gif"));
 			imageLabel.setIcon(image);
 			imageLabel.setText("");
 		} catch (NullPointerException e) {
