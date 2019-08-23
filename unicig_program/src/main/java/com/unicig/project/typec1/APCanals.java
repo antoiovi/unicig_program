@@ -12,16 +12,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.unicig.project.APMenubar;
+import com.unicig.project.APanel_Unicig;
+import com.unicig.project.IMenu;
+import com.unicig.project.Project;
 
 import javax.swing.JScrollPane;
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class APCanals extends JPanel {
 	// static final int NCOL=6;
@@ -44,9 +50,20 @@ public class APCanals extends JPanel {
 	private int nFloors;
 	private JSpinner spinnerT;
 	private JSpinner spinnerR;
-
+	String helpString =Project.helpPipeString;
+	APanel_Unicig panelProject;
 	// static final int MAX_FLOORS=6;
-	public APCanals() {
+	public APCanals(APanel_Unicig _panelProject) {
+		this.panelProject=_panelProject;
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				panelProject.panelHidden(IMenu.canali);
+				log("HIDDEN");
+			}
+		});
+		
+		
 		NLABELS = titles.length;
 
 		headers = new JLabel[NLABELS];
@@ -85,8 +102,6 @@ public class APCanals extends JPanel {
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 			gbc_lblNewLabel.gridx = ir + 1;
-			log("gridX= " + String.valueOf(ir + 1));
-
 			gbc_lblNewLabel.gridy = 0;
 			panel_1.add(headers[ir], gbc_lblNewLabel);
 		}
@@ -97,7 +112,6 @@ public class APCanals extends JPanel {
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 			gbc_lblNewLabel.gridx = 0;
 			gbc_lblNewLabel.gridy = ir + 1;
-			log("gridY= " + String.valueOf(ir + 1));
 			panel_1.add(rownames[ir], gbc_lblNewLabel);
 		}
 		ChangeListener listenerH = new ChangeListener() {
@@ -158,7 +172,7 @@ public class APCanals extends JPanel {
 		gbc_btnCopy.gridy = 1;
 		panel_1.add(btnCopy, gbc_btnCopy);
 
-		// Roghness
+		// Roghness and THERMAL Conductivity
 		JPanel panel2 = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.gridwidth = 5;
@@ -167,15 +181,15 @@ public class APCanals extends JPanel {
 		gbc_panel.gridx = 1;
 		gbc_panel.gridy = NROWS - 1;
 		panel_1.add(panel2, gbc_panel);
+		// Roghness
 		JLabel lblRough = new JLabel("Rougness [mm ]");
-		spinnerR = new JSpinner(new SpinnerNumberModel(0.2, 0.01, 2.0, 0.01));
+		spinnerR = new JSpinner(new SpinnerNumberModel(2.0, 1.0, 7.0, 1.0));
 		panel2.add(lblRough);
 		panel2.add(spinnerR);
-//THERMAL Conductivity
-		// Roghness
-		JLabel lblTherm = new JLabel("Thermal conductivity");
-		spinnerT = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 10.0, 0.1));
-		panel2.add(lblTherm);
+
+		//THERMAL Conductivity
+		JLabel lblTherm = new JLabel("Coeff. heat transmission [W/(m2 K)]");
+		spinnerT = new JSpinner(new SpinnerNumberModel(0.5, 0.1, 160.0, 0.1));		panel2.add(lblTherm);
 		panel2.add(spinnerT);
 
 		// Add INPUT PANEL
@@ -208,7 +222,7 @@ public class APCanals extends JPanel {
 		gbc_panel_lbl.gridheight = 1;
 		gbc_panel_lbl.gridwidth = WIDIMG;
 		gbc_panel_lbl.insets = new Insets(0, 0, 5, 5);
-		gbc_panel_lbl.fill = GridBagConstraints.BELOW_BASELINE;
+		gbc_panel_lbl.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_lbl.gridx = XIMG;
 		gbc_panel_lbl.gridy = NROWS;
 		panel_1.add(panelLable, gbc_panel_lbl);
@@ -220,12 +234,14 @@ public class APCanals extends JPanel {
 		gbc_panel_help.gridheight = 1;
 		gbc_panel_help.gridwidth = 5;
 		gbc_panel_help.insets = new Insets(0, 0, 5, 5);
-		gbc_panel_help.fill = GridBagConstraints.BELOW_BASELINE;
+		gbc_panel_help.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_help.gridx = XIMG + WIDIMG;
 		gbc_panel_help.gridy = NROWS;
 		panel_1.add(panelHelp, gbc_panel_help);
-
-		// this.add(panelLable,BorderLayout.SOUTH);
+		JTextArea helpArea = new JTextArea();
+		helpArea.setText(helpString);
+		helpArea.setEditable(false);
+		panelHelp.add(helpArea, BorderLayout.NORTH);
 
 		this.setNFloors(3);
 	}

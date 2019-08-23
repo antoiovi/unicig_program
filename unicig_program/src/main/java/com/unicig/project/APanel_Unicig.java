@@ -95,5 +95,13 @@ public class APanel_Unicig extends JPanel implements com.unicig.project.IMenu{
 		cl.show(this,IMenu.condottiaria);
 		
 	}
+	
+	/**
+	 * Eventi da pannelli sottostanti
+	 */
+	
+	public void panelHidden(String name) {
+		
+	}
 
 }

@@ -1,6 +1,8 @@
 package com.unicig.project.typec1;
 
-public class ProjectC1 {
+import com.unicig.project.Project;
+
+public class ProjectC1  {
 	static final int HEIGHT=0;
 	static final int DIAM=1;
 	static final int SIDEA=2;
@@ -20,7 +22,7 @@ public class ProjectC1 {
 	
 	public ProjectC1() {
 		super();
-		conduct=new double[MAX_FLOORS][7];
+		conduct=new double[MAX_FLOORS+2][10];
 		
 	}
 	

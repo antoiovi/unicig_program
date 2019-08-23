@@ -3,6 +3,7 @@ import javax.swing.JPanel;
 
 import com.unicig.project.typec1.APCanals;
 import com.unicig.project.typec1.APCondotti;
+import com.unicig.project.typec1.ProjectC1;
 
 import java.awt.CardLayout;
 
@@ -12,10 +13,12 @@ public class APunicig10641_1 extends APanel_Unicig implements IMenu {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private ProjectC1 projectc1;
+	
+	
 	public APunicig10641_1() {
 		setLayout(new CardLayout(0, 0));
-		
+		 projectc1=new ProjectC1();	
 		
 /*apdati=new APDati();
 apambiente=new APAmbiente();
@@ -31,9 +34,9 @@ apcaldaie=new JPanel();
 apinputdata=new JPanel();
 apoutputdata=new JPanel();
 //apcondotti=new Condotti();
-apcondotti=new APCondotti();
+apcondotti=new APCondotti(this);
 
-apcanali=new APCanals();
+apcanali=new APCanals(this);
 
 
 //Add to CardLayout the panel and its name
@@ -47,6 +50,18 @@ add(apcaldaie,IMenu.caldaie);
 add(apinputdata,IMenu.inputdata);
 add(apoutputdata,IMenu.outputdata);
 
-	}
 
+
+
+	}
+	@Override
+	public void panelHidden(String name){
+	
+		if(name.equals(IMenu.canali)) {
+
+		}else if(name.equals(IMenu.condotti)) {
+			APCondotti ap=(APCondotti)apcondotti;
+			ap.project_Data(projectc1);
+		}
+	}
 }
