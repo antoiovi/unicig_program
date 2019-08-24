@@ -11,18 +11,19 @@ public class ProjectC1 {
 	static final int CURVRED = 5;
 	static final int CONTACT = 6;
 
-	static final int LASTVAL = 10;
+	static final int LASTVAL = 7;
 
 	static final String titlesCanal[] = { "Height [m]", "Total lenght[m]", "Diameter[mm]", "Thickness[mm]",
 			"Curve red. fact.", "% Contact Extern" };
+
 	static final String titlesCond[] = { "Height [m]", "Diameter[mm]", "Side A[mm]", "Side B[mm]", "Thickness[mm]",
 			"Change dir. coeff", "% Contact Extern" };
-	
+
 	public static final int MAX_FLOORS = 6;
 	public static final String CIRCULAR = "Circular";
 	public static final String RECTANGULAR = "Rectangular";
-	
-	//Building
+
+	// Building
 	public int N_Floors = 3;
 	public double minOutTemp = 5.0;
 	public double heightSeaLevel = 0;
@@ -48,7 +49,50 @@ public class ProjectC1 {
 			}
 		}
 	}
-	
-	
 
+	static final String inputCirc[] = { "Height [m]", "Diameter[mm]", "Thickness[mm]", "Curve red. fact.",
+			"% Contact Extern" };
+
+	static final String inputRect[] = { "Height [m]", "Side A[mm]", "Side B[mm]", "Thickness[mm]", "Change dir. coeff",
+			"% Contact Extern" };
+
+	public String[] getInputHeader() {
+		if(chimneySection.equals(CIRCULAR)) 
+			return inputCirc;
+		else
+			return inputRect;
+	}
+
+	double[][] getInputData() {
+		double[][] inputdata;
+		if (chimneySection.equals(CIRCULAR)) {
+			inputdata = new double[N_Floors][inputCirc.length];
+			for (int x = 0; x < N_Floors; x++) {
+				for (int y = 0; y < LASTVAL; y++) {
+					if (y == SIDEA || y == SIDEB)
+						continue;
+					if (y > SIDEB)
+						inputdata[x][y - 2] = conduct[x][y];
+					if(y<SIDEA)inputdata[x][y] = conduct[x][y];
+				}
+			}
+
+		} else {
+			inputdata = new double[N_Floors][inputRect.length];
+			for (int x = 0; x < N_Floors; x++) {
+				for (int y = 0; y < conduct[x].length; y++) {
+					if (y == DIAM) {
+						continue;
+					} else if (y > DIAM) {
+						inputdata[x][y -1] = conduct[x][y];
+					} else {
+						inputdata[x][y] = conduct[x][y];
+					}
+
+				}
+			}
+		}
+		return inputdata;
+
+	}
 }

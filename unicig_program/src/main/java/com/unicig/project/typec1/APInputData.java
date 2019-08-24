@@ -16,7 +16,6 @@ public class APInputData extends JPanel implements IPanel{
 	private JTable table_1;
 	private ProjectC1 projectC1;
 	TableModel dataModelCond;
-
 	/**
 	 * Create the panel.
 	 */
@@ -29,7 +28,7 @@ public class APInputData extends JPanel implements IPanel{
 		panel.setLayout(new GridLayout(2, 0, 0, 0));
 
 		dataModelCond =this.createTableModel();
-		JTable table = new JTable(dataModelCond);
+		 table = new JTable(dataModelCond);
 		panel.add(new JScrollPane(table));
 
 		JScrollPane scrollPane = new JScrollPane(panel);
@@ -39,20 +38,19 @@ public class APInputData extends JPanel implements IPanel{
 	
 	private  TableModel createTableModel() {
 		return  new AbstractTableModel() {
-
+			String[] headers=projectC1.getInputHeader();
+			double[][] data=projectC1.getInputData();
 			public int getColumnCount() {
-				return ProjectC1.titlesCond.length + 1;
+				return projectC1.getInputHeader().length+1;
 			}
-
 			public int getRowCount() {
 				return projectC1.N_Floors;
 			}
-
 			// the column header
 			@Override
 			public String getColumnName(int col) {
 				if (col > 0)
-					return projectC1.titlesCond[col - 1];
+					return headers[col - 1];
 				else
 					return "-";
 			}
@@ -61,7 +59,7 @@ public class APInputData extends JPanel implements IPanel{
 				if (col == 0)
 					return String.format("Floor %d", row);
 				else
-					return new Double(projectC1.conduct[row][col - 1]);
+					return new Double(data[row][col -1]);
 			}
 		};
 	}
@@ -71,17 +69,16 @@ public class APInputData extends JPanel implements IPanel{
 	}
 
 	public void setNFloors(int nFloors) {
-		// TODO Auto-generated method stub
-		
+		table.setModel(createTableModel());
 	}
 
 	public void setSectionR() {
-		// TODO Auto-generated method stub
+		table.setModel(createTableModel());
 		
 	}
 
 	public void setSectionC() {
-		// TODO Auto-generated method stub
+		table.setModel(createTableModel());
 		
 	}
 
