@@ -79,7 +79,10 @@ add(apoutputdata,IMenu.outputdata);
 		}else if(name.equals(IMenu.condotti)) {
 			
 			boolean changed=((IPanel)apcondotti).project_Data(projectc1);
-			if (changed) projectChanged();			
+			if (changed) {
+				projectChanged();
+
+			}
 
 			//log(String.format("conduct.lenght: %d \tconduct[0].lenght : %d",m,n));
 			/*for(int ir=0;ir<conduct.length;ir++) {
@@ -115,6 +118,8 @@ add(apoutputdata,IMenu.outputdata);
 	public void projectChanged() {
 		// TODO
 		log("Project CHANGED");
+		((IPanel)apinputdata).setNFloors(projectc1.N_Floors);
+
 	}
 	
 	private void log(String s) {

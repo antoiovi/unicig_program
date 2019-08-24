@@ -70,15 +70,20 @@ public class APInputData extends JPanel implements IPanel{
 
 	public void setNFloors(int nFloors) {
 		table.setModel(createTableModel());
+		table.repaint();
+
 	}
 
 	public void setSectionR() {
 		table.setModel(createTableModel());
+		table.repaint();
 		
 	}
 
 	public void setSectionC() {
 		table.setModel(createTableModel());
+		table.repaint();
+
 		
 	}
 
