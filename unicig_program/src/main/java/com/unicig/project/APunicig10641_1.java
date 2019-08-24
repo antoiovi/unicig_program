@@ -1,4 +1,5 @@
 package com.unicig.project;
+import javax.security.auth.login.AppConfigurationEntry;
 import javax.swing.JPanel;
 
 import com.unicig.project.typec1.APCanals;
@@ -29,13 +30,13 @@ apoutputdata=new APoutputdata();
 apdati=new APDati();*/
 apdati=new JPanel();
 apambiente=new JPanel();
-apedificio=new JPanel();
+apedificio=new APBuilding(this);
 apcaldaie=new JPanel();
 apinputdata=new JPanel();
 apoutputdata=new JPanel();
 //apcondotti=new Condotti();
 apcondotti=new APCondotti(this);
-
+((IPanel)apcondotti).setNFloors(projectc1.N_Floors);
 apcanali=new APCanals(this);
 
 
@@ -56,9 +57,15 @@ add(apoutputdata,IMenu.outputdata);
 	}
 	@Override
 	public void panelHidden(String name){
-	
-		if(name.equals(IMenu.canali)) {
+		int oldNfloors=projectc1.N_Floors;
+		String oldSection=projectc1.chimneySection;
 
+		if(name.equals(IMenu.canali)) {
+			APCanals ap=(APCanals)apcanali;
+			ap.project_Data(projectc1);
+			double canals[][]=projectc1.canal;
+			int n=projectc1.conduct[0].length;
+			int m=projectc1.conduct.length;
 		}else if(name.equals(IMenu.condotti)) {
 			APCondotti ap=(APCondotti)apcondotti;
 			ap.project_Data(projectc1);
@@ -72,9 +79,29 @@ add(apoutputdata,IMenu.outputdata);
 				}
 			}*/
 			
+		}else if(name.equals(IMenu.edificio)) {
+			APBuilding ap=(APBuilding)apedificio;
+			ap.project_Data(projectc1);
+			IPanel apc=(IPanel)apcanali;
+			IPanel apco=(IPanel)apcondotti;
+			if(oldNfloors!=projectc1.N_Floors) projectChanged();
+			apc.setNFloors(projectc1.N_Floors);
+			apco.setNFloors(projectc1.N_Floors);
+			if(!projectc1.chimneySection.equals(oldSection)) projectChanged();
+			if(projectc1.chimneySection.equals(ProjectC1.CIRCULAR))
+				apco.setSectionC();
+			else
+				apco.setSectionR();
+			
+			
 		}
 	}
 
+	public void projectChanged() {
+		// TODO
+		log("Project CHANGED");
+	}
+	
 	private void log(String s) {
 		System.out.println(s);
 	}

@@ -11,9 +11,16 @@ public class ProjectC1  {
 	static final int CURVRED=5;
 	static final int CONTACT=6;
 	
-	static final int MAX_FLOORS=6;
+public	static final int MAX_FLOORS=6;
+public	static final String CIRCULAR="Circular";
+public	static final String RECTANGULAR="Rectangular";
+
 	
-	int N_Floors;
+	public int N_Floors=3;
+	public double minOutTemp=5.0;
+	public double heightSeaLevel=0;
+	public String chimneySection=CIRCULAR;
+
 	//Main Conduct
 	public double conduct[][];
 	public double condRoug;

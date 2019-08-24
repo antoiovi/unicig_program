@@ -21,13 +21,14 @@ import javax.swing.SpinnerNumberModel;
 import com.unicig.project.APMenubar;
 import com.unicig.project.APanel_Unicig;
 import com.unicig.project.IMenu;
+import com.unicig.project.IPanel;
 import com.unicig.project.Project;
 
 import javax.swing.JScrollPane;
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
 
-public class APCondotti extends JPanel {
+public class APCondotti extends JPanel implements IPanel{
 	// static final int NCOL=6;
 	// static final int NROWS=10;
 	
@@ -243,36 +244,38 @@ static final String RECT="RECT";
 	/**
 	 * Set Section to Circular
 	 */
-	private void setSectionC() {
+	public void setSectionC() {
+		section=CIRCULAR;
+
 		for (int ir = 0; ir < (NLABELS); ir++) {
+			log(String.format("header[%d] :%s",ir, headers[ir].getText()));
 
 			for (int fr = 0; fr < (MAX_FLOORS); fr++) {
-				if (ir == SIDEA || ir == SIDEB)
+				log(String.format("rownames[%d]: %s",fr, rownames[fr].getText()));
+				if (ir == SIDEA || ir == SIDEB )
 					spinners[fr][ir].setEnabled(false);
-				if (ir == DIAM)
-					spinners[fr][ir].setEnabled(true);
+				if (ir == DIAM ) 
+					spinners[fr][ir].setEnabled(fr<nFloors);
 			}
 		}
-		section=CIRCULAR;
 	}
 
 	/**
 	 * Set section to Rectangular
 	 */
-	private void setSectionR() {
+	public void setSectionR() {
 		for (int ir = 0; ir < (NLABELS); ir++) {
-
 			for (int fr = 0; fr < (MAX_FLOORS); fr++) {
-				if (ir == SIDEA || ir == SIDEB)
-					spinners[fr][ir].setEnabled(true);
-				if (ir == DIAM)
+				if (ir == SIDEA || ir == SIDEB )
+					spinners[fr][ir].setEnabled( fr<nFloors);
+				if (ir == DIAM )
 					spinners[fr][ir].setEnabled(false);
 			}
 		}
 		section=RECT;
 	}
 
-	private void setNFloors(int nFloors) {
+	public void setNFloors(int nFloors) {
 		if (nFloors < 1 || nFloors > MAX_FLOORS)
 			return;
 		this.nFloors = nFloors;
@@ -284,6 +287,7 @@ static final String RECT="RECT";
 					spinners[fr][ir].setEnabled(true);
 			}
 
+		
 		}
 		if(section.equals(CIRCULAR))
 			this.setSectionC();

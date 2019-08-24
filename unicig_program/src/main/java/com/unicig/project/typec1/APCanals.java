@@ -21,6 +21,7 @@ import javax.swing.event.ChangeListener;
 import com.unicig.project.APMenubar;
 import com.unicig.project.APanel_Unicig;
 import com.unicig.project.IMenu;
+import com.unicig.project.IPanel;
 import com.unicig.project.Project;
 
 import javax.swing.JScrollPane;
@@ -29,7 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class APCanals extends JPanel {
+public class APCanals extends JPanel implements IPanel{
 	// static final int NCOL=6;
 	// static final int NROWS=10;
 	int NCOL;
@@ -246,7 +247,7 @@ public class APCanals extends JPanel {
 		this.setNFloors(3);
 	}
 
-	private void setNFloors(int nFloors) {
+	public void setNFloors(int nFloors) {
 		if (nFloors < 1 || nFloors > MAX_FLOORS)
 			return;
 		this.nFloors = nFloors;
@@ -257,7 +258,6 @@ public class APCanals extends JPanel {
 				else
 					spinners[fr][ir].setEnabled(true);
 			}
-
 		}
 	}
 
@@ -290,6 +290,16 @@ public class APCanals extends JPanel {
 
 	private void log(String s) {
 		System.out.println(s);
+	}
+
+	public void setSectionR() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setSectionC() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
