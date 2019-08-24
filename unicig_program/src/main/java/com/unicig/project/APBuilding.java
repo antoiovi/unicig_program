@@ -120,15 +120,32 @@ public class APBuilding extends JPanel implements IPanel{
 		add(lblBuildngAndEvnvoirnmant, BorderLayout.NORTH);
 
 	}
-	public void project_Data(ProjectC1 project) {
-		
+	public boolean project_Data(ProjectC1 project) {
+		boolean changed=false;
+				double oldval=project.minOutTemp;
 				Double value = (Double) spinMinTemp.getValue();
+				changed=testChanged(oldval, value, changed);
+				
+				oldval=project.minOutTemp ;
 				project.minOutTemp = value.doubleValue();
-				value = (Double) spinHeightSea.getValue();
-				Integer ival=(Integer)spinNumFloors.getValue();
-				project.N_Floors=ival;
+				changed=testChanged(oldval, project.minOutTemp , changed);
+				
+				oldval=project.heightSeaLevel;
+				project.heightSeaLevel=(Double) spinHeightSea.getValue();
+				changed=testChanged(oldval, project.heightSeaLevel , changed);
+				
+				int oldint=project.N_Floors;
+				project.N_Floors=(Integer)spinNumFloors.getValue();
+				changed =(changed==true)?changed:(!(oldint==project.N_Floors));
+				String oldstring=project.chimneySection;
 				project.chimneySection=(String)comboBoxSection.getSelectedItem();
-				}
+				changed =(changed==true)?changed:(!(oldstring.equals(project.chimneySection)));
+				return changed;
+	}
+	
+	boolean testChanged(double oldval,double value,boolean changed) {
+		return (changed==true)?changed:(!(oldval==value));
+	}
 	public void setNFloors(int nFloors) {
 		// Do Nothing
 		

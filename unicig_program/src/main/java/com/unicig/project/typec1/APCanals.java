@@ -36,9 +36,8 @@ public class APCanals extends JPanel implements IPanel{
 	int NCOL;
 	int NROWS;
 	int NLABELS;
-	static final int MAX_FLOORS = 6;
-	static final String titles[] = { "Height [m]", "Total lenght[m]", "Diameter[mm]", "Thickness[mm]",
-			"Curve red. fact.", "% Contact Extern" };
+	final int MAX_FLOORS =ProjectC1.MAX_FLOORS;
+	final String titles[] = ProjectC1.titlesCanal;
 	static final int HEIGHT = 0;
 	static final int TOTALLENGHT = 1;
 	static final int DIAM = 2;
@@ -261,20 +260,30 @@ public class APCanals extends JPanel implements IPanel{
 		}
 	}
 
-	public void project_Data(ProjectC1 project) {
+	public boolean project_Data(ProjectC1 project) {
+		boolean changed=false;
 		for (int ir = 0; ir < (NLABELS); ir++) {
 			for (int fr = 0; fr < (MAX_FLOORS); fr++) {
+				double oldval=project.canal[fr][ir];
 				Double value = (Double) spinners[fr][ir].getValue();
 				project.canal[fr][ir] = value.doubleValue();
+			changed=testChanged(oldval, value, changed);
 			}
+			double oldval=project.canalCondTerm;
 			Double value = (Double) spinnerT.getValue();
 			project.canalCondTerm = value.doubleValue();
+			changed=testChanged(oldval, value, changed);
+			oldval=project.canalRoug;
 			value = (Double) spinnerR.getValue();
 			project.canalRoug = value.doubleValue();
+			changed=testChanged(oldval, value, changed);
+
 		}
-
+		return changed;
 	}
-
+	boolean testChanged(double oldval,double value,boolean changed) {
+		return (changed==true)?changed:(!(oldval==value));
+	}
 	private class ActionCopy implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -293,12 +302,12 @@ public class APCanals extends JPanel implements IPanel{
 	}
 
 	public void setSectionR() {
-		// TODO Auto-generated method stub
+		// DO NOTHING :Always circular
 		
 	}
 
 	public void setSectionC() {
-		// TODO Auto-generated method stub
+		// DO NOTHING :Always circular
 		
 	}
 

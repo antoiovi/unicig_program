@@ -35,9 +35,8 @@ public class APCondotti extends JPanel implements IPanel{
 	int NCOL;
 	int NROWS;
 	int NLABELS;
-	static final int MAX_FLOORS = 6;
-	static final String titles[] = { "Height [m]", "Diameter[mm]", "Side A[mm]", "Side B[mm]", "Thickness[mm]",
-			"Change dir. coeff", "% Contact Extern" };
+	final int MAX_FLOORS =ProjectC1.MAX_FLOORS;
+	final String titles[] =ProjectC1.titlesCond;
 	static final int HEIGHT = 0;
 	static final int DIAM = 1;
 	static final int SIDEA = 2;
@@ -248,7 +247,7 @@ static final String RECT="RECT";
 		section=CIRCULAR;
 
 		for (int ir = 0; ir < (NLABELS); ir++) {
-			log(String.format("header[%d] :%s",ir, headers[ir].getText()));
+			//log(String.format("header[%d] :%s",ir, headers[ir].getText()));
 
 			for (int fr = 0; fr < (MAX_FLOORS); fr++) {
 				log(String.format("rownames[%d]: %s",fr, rownames[fr].getText()));
@@ -295,18 +294,22 @@ static final String RECT="RECT";
 			this.setSectionR();
 	}
 
-	public void project_Data(ProjectC1 project) {
+	public boolean project_Data(ProjectC1 project) {
+		boolean changed=false;
 		for (int ir = 0; ir < (NLABELS); ir++) {
-			for (int fr = 0; fr < (MAX_FLOORS); fr++) {
+			for (int fr = 0; fr < (project.N_Floors); fr++) {
+				double oldval=project.conduct[fr][ir];
 				Double value = (Double) spinners[fr][ir].getValue();
+				changed=(changed==true)?changed:(!(oldval==value));
 				project.conduct[fr][ir] = value.doubleValue();
+				//log("Changed condotti? "+String.valueOf(changed));
 			}
 			Double value = (Double) spinnerT.getValue();
 			project.condCondTerm = value.doubleValue();
 			value = (Double) spinnerR.getValue();
 			project.condRoug = value.doubleValue();
 		}
-
+		return changed;
 	}
 
 	private class ActionCopy implements ActionListener {

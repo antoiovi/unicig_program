@@ -4,11 +4,14 @@ import javax.swing.JPanel;
 
 import com.unicig.project.typec1.APCanals;
 import com.unicig.project.typec1.APCondotti;
+import com.unicig.project.typec1.APInputData;
 import com.unicig.project.typec1.ProjectC1;
 
 import java.awt.CardLayout;
+import java.util.ArrayList;
+import java.util.List;
 
-public class APunicig10641_1 extends APanel_Unicig implements IMenu {
+public class APunicig10641_1 extends APanel_Unicig implements IMenu,IPanel {
 	
 	/**
 	 * 
@@ -16,7 +19,7 @@ public class APunicig10641_1 extends APanel_Unicig implements IMenu {
 	private static final long serialVersionUID = 1L;
 	private ProjectC1 projectc1;
 	
-	
+List<IPanel>	ipanels=new ArrayList<IPanel>();
 	public APunicig10641_1() {
 		setLayout(new CardLayout(0, 0));
 		 projectc1=new ProjectC1();	
@@ -28,16 +31,27 @@ apcaldaie=new Generatori();
 apinputdata=new APinputdata();
 apoutputdata=new APoutputdata();
 apdati=new APDati();*/
-apdati=new JPanel();
-apambiente=new JPanel();
+
 apedificio=new APBuilding(this);
-apcaldaie=new JPanel();
-apinputdata=new JPanel();
-apoutputdata=new JPanel();
+ipanels.add(((IPanel)apedificio));
+
 //apcondotti=new Condotti();
 apcondotti=new APCondotti(this);
 ((IPanel)apcondotti).setNFloors(projectc1.N_Floors);
+ipanels.add(((IPanel)apcondotti));
+
 apcanali=new APCanals(this);
+((IPanel)apcanali).setNFloors(projectc1.N_Floors);
+ipanels.add(((IPanel)apcanali));
+
+apinputdata=new APInputData(projectc1);
+((IPanel)apcanali).setNFloors(projectc1.N_Floors);
+ipanels.add(((IPanel)apinputdata));
+
+apdati=new JPanel();
+apambiente=new JPanel();
+apcaldaie=new JPanel();
+apoutputdata=new JPanel();
 
 
 //Add to CardLayout the panel and its name
@@ -57,21 +71,16 @@ add(apoutputdata,IMenu.outputdata);
 	}
 	@Override
 	public void panelHidden(String name){
-		int oldNfloors=projectc1.N_Floors;
-		String oldSection=projectc1.chimneySection;
+		
 
 		if(name.equals(IMenu.canali)) {
-			APCanals ap=(APCanals)apcanali;
-			ap.project_Data(projectc1);
-			double canals[][]=projectc1.canal;
-			int n=projectc1.conduct[0].length;
-			int m=projectc1.conduct.length;
+			boolean changed=((IPanel)apcanali).project_Data(projectc1);
+			if (changed) projectChanged();			
 		}else if(name.equals(IMenu.condotti)) {
-			APCondotti ap=(APCondotti)apcondotti;
-			ap.project_Data(projectc1);
-			double conduct[][]=projectc1.conduct;
-			int n=projectc1.conduct[0].length;
-			int m=projectc1.conduct.length;
+			
+			boolean changed=((IPanel)apcondotti).project_Data(projectc1);
+			if (changed) projectChanged();			
+
 			//log(String.format("conduct.lenght: %d \tconduct[0].lenght : %d",m,n));
 			/*for(int ir=0;ir<conduct.length;ir++) {
 				for(int am=0;am<conduct[ir].length;am++) {
@@ -80,22 +89,28 @@ add(apoutputdata,IMenu.outputdata);
 			}*/
 			
 		}else if(name.equals(IMenu.edificio)) {
+			int oldNfloors=projectc1.N_Floors;
+			String oldSection=projectc1.chimneySection;
 			APBuilding ap=(APBuilding)apedificio;
-			ap.project_Data(projectc1);
-			IPanel apc=(IPanel)apcanali;
-			IPanel apco=(IPanel)apcondotti;
-			if(oldNfloors!=projectc1.N_Floors) projectChanged();
-			apc.setNFloors(projectc1.N_Floors);
-			apco.setNFloors(projectc1.N_Floors);
-			if(!projectc1.chimneySection.equals(oldSection)) projectChanged();
-			if(projectc1.chimneySection.equals(ProjectC1.CIRCULAR))
-				apco.setSectionC();
-			else
-				apco.setSectionR();
 			
+			boolean changed=ap.project_Data(projectc1);
+			if (changed) projectChanged();			
+			
+			if(oldNfloors!=projectc1.N_Floors) {
+				projectChanged();
+				setNFloors(projectc1.N_Floors);
+			}
+			if(!projectc1.chimneySection.equals(oldSection)) {
+				if(projectc1.chimneySection.equals(ProjectC1.CIRCULAR)) 
+					setSectionC();
+				else 
+					setSectionR();
+			}
 			
 		}
 	}
+	
+	
 
 	public void projectChanged() {
 		// TODO
@@ -104,6 +119,21 @@ add(apoutputdata,IMenu.outputdata);
 	
 	private void log(String s) {
 		System.out.println(s);
+	}
+	public boolean project_Data(ProjectC1 project) {
+		return false;
+	}
+	public void setNFloors(int nFloors) {
+		for(IPanel ip:ipanels)
+			ip.setNFloors(nFloors);
+	}
+	public void setSectionR() {
+		for(IPanel ip:ipanels)
+			ip.setSectionR();		
+	}
+	public void setSectionC() {
+		for(IPanel ip:ipanels)
+			ip.setSectionC();			
 	}
 
 }
